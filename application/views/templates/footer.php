@@ -13,6 +13,14 @@
   </div>
 </footer>
 </div>
+<script>
+  $(document).ready(function() {
+    var duration = 4000; // 4 seconds
+    setTimeout(function() {
+      $('#success-alert').hide();
+    }, duration);
+  });
+</script>
 <!-- JavaScript files-->
 <script src="<?= base_url() . 'assets/' ?>vendor/popper.js/umd/popper.min.js"> </script>
 <script src="<?= base_url() . 'assets/' ?>vendor/bootstrap/js/bootstrap.min.js"></script>

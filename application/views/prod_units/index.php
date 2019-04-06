@@ -4,20 +4,19 @@
       <div class="card">
         <div class="card-header">
           <div class="float-right">
-            <a href="<?= base_url() ?>departments/create" class="btn btn-info"><i class="fa fa-plus-circle" aria-hidden="true"></i> New Department</a>
+            <a href="<?= base_url() ?>prod_units/create" class="btn btn-info"><i class="fa fa-plus-circle" aria-hidden="true"></i> New Unit</a>
           </div>
           <div class="text-monospace">
-            <h2>DEPARTMENT LIST</h2>
+            <h2>UNIT LIST</h2>
           </div>
         </div>
         <div class="card-body">
           <div class="table-responsive-sm">
-            <table id="department-table" class="table table-bordered table-striped table-hover center">
+            <table id="unit-table" class="table table-bordered table-striped table-hover center">
               <thead>
                 <tr>
-                  <th>depart_no</th>
-                  <th>Code</th>
-                  <th>Title</th>
+                  <th>unit_no</th>
+                  <th>Unit Name</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -32,10 +31,10 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function() {
-    var table = $('#department-table').DataTable({
+    var table = $('#unit-table').DataTable({
       "pageLength": 5,
       "ajax": {
-        url: "<?php echo site_url("departments/departments_page") ?>",
+        url: "<?php echo site_url("prod_units/units_page") ?>",
         type: 'GET'
       },
       "columnDefs": [{
@@ -58,13 +57,13 @@
       ],
       "iDisplayLength": 5
     });
-    $('#department-table tbody').on('click', 'button', function() {
+    $('#unit-table tbody').on('click', 'button', function() {
       var data = table.row($(this).parents('tr')).data();
       if (this.name == 'edit') {
-        window.location = '<?= base_url() ?>departments/edit/' + data[0];
+        window.location = '<?= base_url() ?>prod_units/edit/' + data[0];
       } else if (this.name == 'delete') {
-        if (confirm('Are you sure to delete this department?')) {
-          window.location = '<?= base_url() ?>departments/soft_delete/' + data[0];
+        if (confirm('Are you sure to delete this unit?')) {
+          window.location = '<?= base_url() ?>prod_units/soft_delete/' + data[0];
         }
       }
     });

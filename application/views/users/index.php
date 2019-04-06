@@ -42,7 +42,7 @@
         type: 'GET'
       },
       "columnDefs": [{
-        "width": "20%",
+        "width": "15%",
         "targets": -1,
         "data": null,
         "defaultContent": `
@@ -50,7 +50,8 @@
         <button class='btn btn-danger mb-1' name='delete'>
         <i class='fa fa-trash-o fa-fw' aria-hidden='true'></i>
         </button>
-        <button class='btn btn-info mb-1' name='show'><i class="fa fa-search fa-fw" aria-hidden="true"></i></button>`
+        <button class='btn btn-info mb-1' name='show'><i class="fa fa-search fa-fw" aria-hidden="true"></i></button>
+        <button class='btn btn-secondary mb-1' name='account'><i class="fa fa-key fa-fw" aria-hidden="true"></i></i></i></button>`
       }, {
         "targets": [0],
         "visible": false,
@@ -72,6 +73,8 @@
         }
       } else if (this.name == 'show') {
         window.location = '<?= base_url() ?>users/show/' + data[0];
+      } else if (this.name == 'account') {
+        window.location = '<?= base_url() ?>userslogin/create/' + data[0];
       }
     });
   });

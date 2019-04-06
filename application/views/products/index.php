@@ -4,20 +4,23 @@
       <div class="card">
         <div class="card-header">
           <div class="float-right">
-            <a href="<?= base_url() ?>departments/create" class="btn btn-info"><i class="fa fa-plus-circle" aria-hidden="true"></i> New Department</a>
+            <a href="<?= base_url() ?>products/create" class="btn btn-info"><i class="fa fa-plus-circle" aria-hidden="true"></i> New Product</a>
           </div>
           <div class="text-monospace">
-            <h2>DEPARTMENT LIST</h2>
+            <h2>PRODUCTS LIST</h2>
           </div>
         </div>
         <div class="card-body">
           <div class="table-responsive-sm">
-            <table id="department-table" class="table table-bordered table-striped table-hover center">
+            <table id="product-table" class="table table-bordered table-striped table-hover center">
               <thead>
                 <tr>
-                  <th>depart_no</th>
+                  <th>pro_no</th>
                   <th>Code</th>
                   <th>Title</th>
+                  <th>Price</th>
+                  <th>Unit</th>
+                  <th>Category</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -32,10 +35,10 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function() {
-    var table = $('#department-table').DataTable({
+    var table = $('#product-table').DataTable({
       "pageLength": 5,
       "ajax": {
-        url: "<?php echo site_url("departments/departments_page") ?>",
+        url: "<?php echo site_url("products/products_page") ?>",
         type: 'GET'
       },
       "columnDefs": [{
@@ -58,13 +61,13 @@
       ],
       "iDisplayLength": 5
     });
-    $('#department-table tbody').on('click', 'button', function() {
+    $('#product-table tbody').on('click', 'button', function() {
       var data = table.row($(this).parents('tr')).data();
       if (this.name == 'edit') {
-        window.location = '<?= base_url() ?>departments/edit/' + data[0];
+        window.location = '<?= base_url() ?>products/edit/' + data[0];
       } else if (this.name == 'delete') {
-        if (confirm('Are you sure to delete this department?')) {
-          window.location = '<?= base_url() ?>departments/soft_delete/' + data[0];
+        if (confirm('Are you sure to delete this product?')) {
+          window.location = '<?= base_url() ?>products/soft_delete/' + data[0];
         }
       }
     });
