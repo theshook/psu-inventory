@@ -55,7 +55,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <div class="sidenav-header d-flex align-items-center justify-content-center">
           <!-- User Info-->
           <div class="sidenav-header-inner text-center"><img src="<?= base_url() . 'assets/' ?>img/avatar-7.jpg" alt="person" class="img-fluid rounded-circle">
-            <h2 class="h5"><?= $this->session->userdata('user_lname') . ', ' . $this->session->userdata('user_fname') ?></h2><span>Web Developer</span>
+            <h2 class="h5"><?= $this->session->userdata('user_lname') . ', ' . $this->session->userdata('user_fname') ?></h2><span><?= $this->session->userdata('depart_code') ?></span>
           </div>
           <!-- Small Brand information, appears on minimized sidebar-->
           <div class="sidenav-header-logo"><a href="<?= base_url() ?>" class="brand-small text-center"> <strong>I</strong><strong class="text-primary">S</strong></a></div>

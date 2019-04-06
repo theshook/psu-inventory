@@ -26,6 +26,7 @@ class UsersLogin extends CI_Controller
           'user_no' => $user->user_no,
           'user_fname' => $user->user_fname,
           'user_lname' => $user->user_lname,
+          'depart_code' => $user->depart_code,
           'login_name' => $username,
           'logged_in' => true
         );

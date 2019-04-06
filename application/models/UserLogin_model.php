@@ -18,6 +18,8 @@ class UserLogin_model extends CI_Model
   {
     // Validate
     $this->db->join('users', 'users.user_no = user_login.user_no');
+    $this->db->join('employments', 'employments.user_no = users.user_no');
+    $this->db->join('departments', 'departments.depart_no = employments.depart_no');
     $this->db->where('login_name', $username);
     $this->db->where('login_pword', $password);
     $result = $this->db->get('user_login');
