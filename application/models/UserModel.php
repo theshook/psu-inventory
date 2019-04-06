@@ -21,8 +21,10 @@ class UserModel extends CI_Model
 
   public function get_user($user_no)
   {
+    $this->db->join('employments', 'employments.user_no = users.user_no');
+    $this->db->join('departments', 'departments.depart_no = employments.depart_no');
     $query = $this->db->get_where('users', array(
-      'user_no' => $user_no,
+      'users.user_no' => $user_no,
       'user_encode_delete' => NULL
     ));
     return $query->result();
@@ -45,8 +47,11 @@ class UserModel extends CI_Model
       'user_fname' => $this->input->post('user_fname'),
       'user_mname' => $this->input->post('user_mname')
     );
+    $this->db->insert('users', $data);
 
-    return $this->db->insert('users', $data);
+    $user_no = $this->db->insert_id();
+
+    return $this->Employment_model->create_user_employ($user_no);
   }
 
   public function update_user($user_no)
@@ -61,7 +66,8 @@ class UserModel extends CI_Model
     $this->db->where('user_encode_delete', NULL);
     $this->db->where('user_inactive', 0);
     $this->db->where('user_delete', 0);
-    return $this->db->update('users', $data);
+    $this->db->update('users', $data);
+    return $this->Employment_model->update_user_employ($user_no);
   }
 
   public function soft_delete_user($user_no)
@@ -77,20 +83,5 @@ class UserModel extends CI_Model
     $this->db->where_not_in('user_no', $user_no);
     $query = $this->db->get('users');
     return $query->num_rows();
-  }
-
-  // Database Seed
-  function insert($options = array())
-  {
-    $this->db->insert('users', $options);
-  }
-  function truncate()
-  {
-    $this->db->truncate('users');
-  }
-  function get()
-  {
-    $query = $this->db->get('users');
-    return $query->result();
   }
 }

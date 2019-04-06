@@ -29,6 +29,35 @@
             <div class="invalid-feedback"><?= form_error('user_mname'); ?></div>
           </div>
           <div class="form-group">
+            <label>Department</label>
+            <select name="depart" class="form-control">
+              <?php foreach ($departs as $depart) : ?>
+                <option value="<?= $depart->depart_no ?>" <?= ($user[0]->depart_no == $depart->depart_no) ? 'selected' : '' ?>>
+                  <?= $depart->depart_code ?> - <?= $depart->depart_title ?>
+                </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Employment Start</label>
+            <input type="date" name="employ_start" class="form-control <?= (form_error('employ_start') != false) ? 'is-invalid' : '' ?>" value="<?= $user[0]->employ_start ?>">
+            <div class="invalid-feedback"><?= form_error('employ_start'); ?></div>
+          </div>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" name="present" class="custom-control-input" id="present" value="1" <?= ($user[0]->employ_end == '') ? "checked" : '' ?>>
+            <label class="custom-control-label" for="present">Present</label>
+          </div>
+          <div class="form-group" id="employ_end" style="<?= ($user[0]->employ_end == '') ? "display: none" : '' ?>">
+            <label>Employment end</label>
+            <input type="date" name="employ_end" class="form-control <?= (form_error('employ_end') != false) ? 'is-invalid' : '' ?>" value="<?= $user[0]->employ_end ?>">
+            <div class="invalid-feedback"><?= form_error('employ_end'); ?></div>
+          </div>
+          <div class="form-group" id="employ_end">
+            <label>Rate</label>
+            <input type="number" name="employ_rate" class="form-control <?= (form_error('employ_rate') != false) ? 'is-invalid' : '' ?>" value="<?= $user[0]->employ_rate ?>">
+            <div class="invalid-feedback"><?= form_error('employ_rate'); ?></div>
+          </div>
+          <div class="form-group">
             <input type="submit" value="Update" class="btn btn-primary">
           </div>
           <?= form_close(); ?>
@@ -37,3 +66,10 @@
     </div>
   </div>
 </div>
+<script>
+  $(document).ready(function() {
+    $('#present').click(function() {
+      $('#employ_end').toggle(!this.checked);
+    });
+  });
+</script>

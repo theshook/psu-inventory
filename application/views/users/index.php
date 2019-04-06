@@ -2,8 +2,13 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <h2 class="h5 display display">User List</h2>
+        <div class="card-header">
+          <div class="float-right">
+            <a href="<?= base_url() ?>users/create" class="btn btn-info"><i class="fa fa-plus-circle" aria-hidden="true"></i> New User</a>
+          </div>
+          <div class="text-monospace">
+            <h2>USER LIST</h2>
+          </div>
         </div>
         <div class="card-body">
           <div class="table-responsive-sm">
@@ -37,14 +42,15 @@
         type: 'GET'
       },
       "columnDefs": [{
-        "width": "15%",
+        "width": "20%",
         "targets": -1,
         "data": null,
         "defaultContent": `
-        <button class='btn btn-primary' name='edit'><i class='fa fa-pencil fa-2x' aria-hidden='true'></i></button>
-        <button class='btn btn-danger' name='delete'>
-        <i class='fa fa-trash-o fa-2x' aria-hidden='true'></i>
-        </button>`
+        <button class='btn btn-primary mb-1' name='edit'><i class='fa fa-pencil fa-fw' aria-hidden='true'></i></button>
+        <button class='btn btn-danger mb-1' name='delete'>
+        <i class='fa fa-trash-o fa-fw' aria-hidden='true'></i>
+        </button>
+        <button class='btn btn-info mb-1' name='show'><i class="fa fa-search fa-fw" aria-hidden="true"></i></button>`
       }, {
         "targets": [0],
         "visible": false,
@@ -61,9 +67,11 @@
       if (this.name == 'edit') {
         window.location = '<?= base_url() ?>users/edit/' + data[0];
       } else if (this.name == 'delete') {
-        if (confirm('Are you sure to hide')) {
+        if (confirm('Are you sure to delete this user?')) {
           window.location = '<?= base_url() ?>users/soft_delete/' + data[0];
         }
+      } else if (this.name == 'show') {
+        window.location = '<?= base_url() ?>users/show/' + data[0];
       }
     });
   });

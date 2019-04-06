@@ -19,10 +19,21 @@ class Users extends CI_Controller
     $this->load->view('templates/footer');
   }
 
+  public function show($user_no)
+  {
+    $data['title'] = 'Users';
+    $data['user'] = $this->UserModel->get_user($user_no);
+    $data['departs'] = $this->Department_model->get_departments()->result();
+
+    $this->load->view('templates/header', $data);
+    $this->load->view('users/show', $data);
+    $this->load->view('templates/footer');
+  }
+
   public function create()
   {
     $data['title'] = 'Users';
-
+    $data['departs'] = $this->Department_model->get_departments()->result();
     $this->form_validation->set_rules(
       'user_id',
       'User ID',
@@ -35,10 +46,16 @@ class Users extends CI_Controller
     $this->form_validation->set_rules('user_lname', 'Last Name', 'required');
     $this->form_validation->set_rules('user_fname', 'First Name', 'required');
     $this->form_validation->set_rules('user_mname', 'Middle Name', 'required');
+    $this->form_validation->set_rules('employ_start', 'Employment Start', 'required');
+    $this->form_validation->set_rules('employ_rate', 'Rate', 'required|integer|is_natural_no_zero');
+
+    if (!$this->input->post('present') == 1) {
+      $this->form_validation->set_rules('employ_end', 'Employment End', 'required');
+    }
 
     if ($this->form_validation->run() === false) {
       $this->load->view('templates/header', $data);
-      $this->load->view('users/create');
+      $this->load->view('users/create', $data);
       $this->load->view('templates/footer');
     } else {
       $this->UserModel->create_user();
@@ -52,7 +69,7 @@ class Users extends CI_Controller
     $data['title'] = 'Users';
 
     $data['user'] = $this->UserModel->get_user($id);
-
+    $data['departs'] = $this->Department_model->get_departments()->result();
     if (empty($data['user'])) {
       show_404();
     }
@@ -142,31 +159,32 @@ class Users extends CI_Controller
   // Seed User table
   function seed()
   {
-    // purge existing data
     $this->_truncate_db();
-
-    // seed users
     $this->_seed_users(25);
-
-    // call more seeds here...
   }
 
   function _seed_users($limit)
   {
-
-
     // create a bunch of base buyer accounts
     for ($i = 0; $i < $limit; $i++) {
 
 
       $data = array(
-        'user_id' => $this->faker->randomNumber($nbDigits = NULL, $strict = false),
+        'user_id' => $this->faker->unique()->randomNumber($nbDigits = NULL, $strict = false),
         'user_fname' => $this->faker->firstName,
         'user_lname' => $this->faker->lastName,
         'user_mname' => $this->faker->city,
       );
 
-      $this->UserModel->insert($data);
+      $data_employment = array(
+        'user_no' => $i + 1,
+        'depart_no' => $this->faker->numberBetween($min = 1, $max = 25),
+        'employ_start' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
+        'employ_end' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
+        'employ_rate' => $this->faker->numberBetween($min = 80, $max = 400)
+      );
+
+      $this->Seed_model->insert($data, $data_employment);
     }
     $this->session->set_flashdata('message', 'Database Seeds Successfully 25 Records Added In Database');
     redirect('users/index', 'location');
@@ -174,6 +192,6 @@ class Users extends CI_Controller
 
   private function _truncate_db()
   {
-    $this->UserModel->truncate();
+    $this->Seed_model->truncate();
   }
 }

@@ -29,6 +29,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
   <link rel="stylesheet" href="<?= base_url() . 'assets/' ?>css/custom.css">
   <!-- Favicon-->
   <link rel="shortcut icon" href="<?= base_url() . 'assets/' ?>img/favicon.ico">
+
   <script src="<?= base_url() . 'assets/' ?>vendor/jquery/jquery.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" />
   <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -37,6 +38,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
   <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+  <!-- <style>
+    .fa-stack {
+      font-size: 1.0em;
+    }
+  </style> -->
 </head>
 
 <body>
@@ -57,10 +63,22 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <h5 class="sidenav-heading">Main Menu</h5>
         <ul id="side-main-menu" class="side-menu list-unstyled">
           <li class="<?= ($title == 'Home') ? 'active' : '' ?>"><a href="<?= base_url() ?>"> <i class="icon-home"></i>Home </a></li>
-          <li class="<?= ($title == 'Users') ? 'active' : '' ?>"><a href="#sideBarUserDropDown" aria-expanded="<?= ($title == 'Users') ? 'true' : 'false' ?>" data-toggle="collapse"> <i class="fa fa-user" aria-hidden="false"></i>User Menu</a>
+          <li class="<?= ($title == 'Users') ? 'active' : '' ?>"><a href="#sideBarUserDropDown" aria-expanded="<?= ($title == 'Users') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-user" aria-hidden="true"></i>User Menu</a>
             <ul id="sideBarUserDropDown" class="collapse list-unstyled <?= ($title == 'Users') ? 'show' : '' ?>">
-              <li><a href="<?= base_url() ?>users/"><i class="fa fa-users" aria-hidden="true"></i>Users</a></li>
-              <li><a href="<?= base_url() ?>users/create"><i class="fa fa-user-plus" aria-hidden="true"></i>New User</a></li>
+              <li><a href="<?= base_url() ?>users/">Users</a></li>
+            </ul>
+          </li>
+          <li class="<?= ($title == 'Department') ? 'active' : '' ?>"><a href="#sideBarDepartDropDown" aria-expanded="<?= ($title == 'Department') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-building" aria-hidden="true"></i></i>Department Menu</a>
+            <ul id="sideBarDepartDropDown" class="collapse list-unstyled <?= ($title == 'Department') ? 'show' : '' ?>">
+              <li><a href="<?= base_url() ?>departments/">Departments</a></li>
+            </ul>
+          </li>
+          <li class="<?= ($title == 'Product') ? 'active' : '' ?>"><a href="#sideBarProdDropDown" aria-expanded="<?= ($title == 'Product') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-product-hunt" aria-hidden="true"></i></i></i>Product Menu</a>
+            <ul id="sideBarProdDropDown" class="collapse list-unstyled <?= ($title == 'Product') ? 'show' : '' ?>">
+              <li><a href="<?= base_url() ?>departments/">Products</a></li>
+              <li><a href="<?= base_url() ?>departments/create">New Product</a></li>
+              <li><a href="<?= base_url() ?>departments/create">Units</a></li>
+              <li><a href="<?= base_url() ?>departments/create">Categories</a></li>
             </ul>
           </li>
         </ul>
