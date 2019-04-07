@@ -45,7 +45,8 @@ class UserModel extends CI_Model
       'user_id' => $this->input->post('user_id'),
       'user_lname' => $this->input->post('user_lname'),
       'user_fname' => $this->input->post('user_fname'),
-      'user_mname' => $this->input->post('user_mname')
+      'user_mname' => $this->input->post('user_mname'),
+      'user_encode' => $this->session->userdata('user_no')
     );
     $this->db->insert('users', $data);
 
@@ -60,7 +61,8 @@ class UserModel extends CI_Model
       'user_id' => $this->input->post('user_id'),
       'user_lname' => $this->input->post('user_lname'),
       'user_fname' => $this->input->post('user_fname'),
-      'user_mname' => $this->input->post('user_mname')
+      'user_mname' => $this->input->post('user_mname'),
+      'user_encode' => $this->session->userdata('user_no')
     );
     $this->db->where('user_no', $user_no);
     $this->db->where('user_encode_delete', NULL);
@@ -74,6 +76,7 @@ class UserModel extends CI_Model
   {
     $this->db->where('user_no', $user_no);
     $this->db->set('user_encode_delete', 'NOW()', FALSE);
+    $this->db->set('user_encode', $this->session->userdata('user_no'));
     return $this->db->update('users');
   }
 

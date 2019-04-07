@@ -3,15 +3,50 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class UserLogin_model extends CI_Model
 {
+  public function __construct()
+  {
+    $this->load->database();
+  }
+
+  public function get_user_account($user_no)
+  {
+    $this->db->join('user_login', 'user_login.user_no = users.user_no');
+    $query = $this->db->get_where('users', array(
+      'users.user_no' => $user_no,
+      'user_encode_delete' => NULL
+    ));
+    return $query->result();
+  }
+
   public function create_account($user_no)
   {
     $data = array(
       'user_no' => $user_no,
       'login_name' => $this->input->post('login_name'),
-      'login_pword' => $this->input->post('login_pword')
+      'login_pword' => md5($this->input->post('login_pword')),
+      'login_encode' => $this->session->userdata('user_no')
     );
 
     return $this->db->insert('user_login', $data);
+  }
+
+  public function update_account($user_no)
+  {
+    $data = array(
+      'login_pword' => md5($this->input->post('login_pword')),
+      'login_encode' => $this->session->userdata('user_no')
+    );
+
+    $this->db->where('user_no', $user_no);
+    return $this->db->update('user_login', $data);
+  }
+
+  public function check_account_exists($old_pword, $user_no)
+  {
+    $this->db->where('login_pword', md5($old_pword));
+    $this->db->where('user_no', $user_no);
+    $query = $this->db->get('user_login');
+    return $query->num_rows();
   }
 
   public function login($username, $password)

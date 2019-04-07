@@ -36,7 +36,8 @@ class Prod_Category_model extends CI_Model
   public function create_category()
   {
     $data = array(
-      'cat_name' => $this->input->post('cat_name')
+      'cat_name' => $this->input->post('cat_name'),
+      'cat_encode' => $this->session->userdata('user_no')
     );
     return $this->db->insert('categories', $data);
   }
@@ -44,7 +45,8 @@ class Prod_Category_model extends CI_Model
   public function update_category($cat_no)
   {
     $data = array(
-      'cat_name' => $this->input->post('cat_name')
+      'cat_name' => $this->input->post('cat_name'),
+      'cat_encode' => $this->session->userdata('user_no')
     );
     $this->db->where('cat_no', $cat_no);
     return $this->db->update('categories', $data);
@@ -54,6 +56,7 @@ class Prod_Category_model extends CI_Model
   {
     $this->db->where('cat_no', $cat_no);
     $this->db->set('cat_delete', 1);
+    $this->db->set('cat_encode', $this->session->userdata('user_no'));
     return $this->db->update('categories');
   }
 

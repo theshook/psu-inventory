@@ -54,7 +54,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <!-- Sidebar Header    -->
         <div class="sidenav-header d-flex align-items-center justify-content-center">
           <!-- User Info-->
-          <div class="sidenav-header-inner text-center"><img src="<?= base_url() . 'assets/' ?>img/avatar-7.jpg" alt="person" class="img-fluid rounded-circle">
+          <div class="sidenav-header-inner text-center">
+            <!-- <img src="<?= base_url() . 'assets/' ?>img/avatar-7.jpg" alt="person" class="img-fluid rounded-circle"> -->
             <h2 class="h5"><?= $this->session->userdata('user_lname') . ', ' . $this->session->userdata('user_fname') ?></h2><span><?= $this->session->userdata('depart_code') ?></span>
           </div>
           <!-- Small Brand information, appears on minimized sidebar-->
@@ -70,16 +71,21 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <li><a href="<?= base_url() ?>users/">Users</a></li>
               </ul>
             </li>
-            <li class="<?= ($title == 'Department') ? 'active' : '' ?>"><a href="#sideBarDepartDropDown" aria-expanded="<?= ($title == 'Department') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-building" aria-hidden="true"></i></i>Department Menu</a>
+            <li class="<?= ($title == 'Department') ? 'active' : '' ?>"><a href="#sideBarDepartDropDown" aria-expanded="<?= ($title == 'Department') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-building" aria-hidden="true"></i>Department Menu</a>
               <ul id="sideBarDepartDropDown" class="collapse list-unstyled <?= ($title == 'Department') ? 'show' : '' ?>">
                 <li><a href="<?= base_url() ?>departments/">Departments</a></li>
               </ul>
             </li>
-            <li class="<?= ($title == 'Product') ? 'active' : '' ?>"><a href="#sideBarProdDropDown" aria-expanded="<?= ($title == 'Product') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-product-hunt" aria-hidden="true"></i></i></i>Product Menu</a>
+            <li class="<?= ($title == 'Product') ? 'active' : '' ?>"><a href="#sideBarProdDropDown" aria-expanded="<?= ($title == 'Product') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-product-hunt" aria-hidden="true"></i>Product Menu</a>
               <ul id="sideBarProdDropDown" class="collapse list-unstyled <?= ($title == 'Product') ? 'show' : '' ?>">
                 <li><a href="<?= base_url() ?>products/">Products</a></li>
                 <li><a href="<?= base_url() ?>prod_units/">Units</a></li>
                 <li><a href="<?= base_url() ?>prod_categories/">Categories</a></li>
+              </ul>
+            </li>
+            <li class="<?= ($title == 'Request') ? 'active' : '' ?>"><a href="#sideBarReqDropDown" aria-expanded="<?= ($title == 'Request') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-envelope" aria-hidden="true"></i>Request Menu</a>
+              <ul id="sideBarReqDropDown" class="collapse list-unstyled <?= ($title == 'Request') ? 'show' : '' ?>">
+                <li><a href="<?= base_url() ?>requests/">Requests</a></li>
               </ul>
             </li>
           </ul>

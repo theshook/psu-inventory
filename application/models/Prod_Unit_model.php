@@ -36,7 +36,8 @@ class Prod_Unit_model extends CI_Model
   public function create_unit()
   {
     $data = array(
-      'unit_name' => $this->input->post('unit_name')
+      'unit_name' => $this->input->post('unit_name'),
+      'unit_encode' => $this->session->userdata('user_no')
     );
     return $this->db->insert('units', $data);
   }
@@ -44,7 +45,8 @@ class Prod_Unit_model extends CI_Model
   public function update_unit($unit_no)
   {
     $data = array(
-      'unit_name' => $this->input->post('unit_name')
+      'unit_name' => $this->input->post('unit_name'),
+      'unit_encode' => $this->session->userdata('user_no')
     );
     $this->db->where('unit_no', $unit_no);
     return $this->db->update('units', $data);
@@ -54,6 +56,7 @@ class Prod_Unit_model extends CI_Model
   {
     $this->db->where('unit_no', $unit_no);
     $this->db->set('unit_delete', 1);
+    $this->db->set('unit_encode', $this->session->userdata('user_no'));
     return $this->db->update('units');
   }
 

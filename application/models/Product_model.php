@@ -50,6 +50,7 @@ class Product_model extends CI_Model
       'pro_code' => $this->input->post('pro_code'),
       'pro_title' => $this->input->post('pro_title'),
       'pro_price' => $this->input->post('pro_price'),
+      'pro_encode' => $this->session->userdata('user_no')
     );
 
     return $this->db->insert('products', $data);
@@ -63,6 +64,7 @@ class Product_model extends CI_Model
       'pro_code' => $this->input->post('pro_code'),
       'pro_title' => $this->input->post('pro_title'),
       'pro_price' => $this->input->post('pro_price'),
+      'pro_encode' => $this->session->userdata('user_no')
     );
     $this->db->where('pro_no', $pro_no);
     return $this->db->update('products', $data);
@@ -72,6 +74,7 @@ class Product_model extends CI_Model
   {
     $this->db->where('pro_no', $pro_no);
     $this->db->set('pro_delete', 1);
+    $this->db->set('pro_encode', $this->session->userdata('user_no'));
     return $this->db->update('products');
   }
 

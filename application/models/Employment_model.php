@@ -14,7 +14,8 @@ class Employment_model extends CI_Model
       'depart_no' => $this->input->post('depart'),
       'employ_start' => $this->input->post('employ_start'),
       'employ_end' => ($this->input->post('present') == 1) ? NULL : $this->input->post('employ_end'),
-      'employ_rate' => $this->input->post('employ_rate')
+      'employ_rate' => $this->input->post('employ_rate'),
+      'employ_encode' => $this->session->userdata('user_no')
     );
 
     return $this->db->insert('employments', $data);
@@ -26,7 +27,8 @@ class Employment_model extends CI_Model
       'depart_no' => $this->input->post('depart'),
       'employ_start' => $this->input->post('employ_start'),
       'employ_end' => ($this->input->post('present') == 1) ? NULL : $this->input->post('employ_end'),
-      'employ_rate' => $this->input->post('employ_rate')
+      'employ_rate' => $this->input->post('employ_rate'),
+      'employ_encode' => $this->session->userdata('user_no')
     );
     $this->db->where('user_no', $user_no);
     return $this->db->update('employments', $data);

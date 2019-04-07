@@ -42,7 +42,8 @@ class Department_model extends CI_Model
   {
     $data = array(
       'depart_code' => $this->input->post('depart_code'),
-      'depart_title' => $this->input->post('depart_title')
+      'depart_title' => $this->input->post('depart_title'),
+      'depart_encode' => $this->session->userdata('user_no')
     );
     return $this->db->insert('departments', $data);
   }
@@ -51,7 +52,8 @@ class Department_model extends CI_Model
   {
     $data = array(
       'depart_code' => $this->input->post('depart_code'),
-      'depart_title' => $this->input->post('depart_title')
+      'depart_title' => $this->input->post('depart_title'),
+      'depart_encode' => $this->session->userdata('user_no')
     );
     $this->db->where('depart_no', $depart_no);
     $this->db->where('depart_inactive', 0);
@@ -63,6 +65,7 @@ class Department_model extends CI_Model
   {
     $this->db->where('depart_no', $depart_no);
     $this->db->set('depart_delete', 1);
+    $this->db->set('depart_encode', $this->session->userdata('user_no'));
     return $this->db->update('departments');
   }
 

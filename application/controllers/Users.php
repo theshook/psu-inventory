@@ -9,6 +9,10 @@ class Users extends CI_Controller
     parent::__construct();
     // initiate faker
     $this->faker = Faker\Factory::create();
+
+    if (!$this->session->userdata('logged_in')) {
+      redirect('login');
+    }
   }
 
   public function index()

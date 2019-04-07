@@ -26,6 +26,8 @@ class UsersLogin extends CI_Controller
           'user_no' => $user->user_no,
           'user_fname' => $user->user_fname,
           'user_lname' => $user->user_lname,
+          'user_mname' => $user->user_mname,
+          'depart_no' => $user->depart_no,
           'depart_code' => $user->depart_code,
           'login_name' => $username,
           'logged_in' => true
@@ -60,6 +62,9 @@ class UsersLogin extends CI_Controller
 
   public function create()
   {
+    if (!$this->session->userdata('logged_in')) {
+      redirect('login');
+    }
     $data['title'] = 'User';
     $user_no = $this->uri->segment(3);
 
@@ -67,6 +72,12 @@ class UsersLogin extends CI_Controller
     if (empty($data['user'])) {
       show_404();
     } else {
+      $data['user_login'] = $this->UserLogin_model->get_user_account($user_no);
+      if (empty($data['user_login'])) {
+        $data['action'] = 'store';
+      } else {
+        $data['action'] = 'update';
+      }
       $this->load->view('templates/header', $data);
       $this->load->view('userslogin/create', $data);
       $this->load->view('templates/footer');
@@ -75,6 +86,9 @@ class UsersLogin extends CI_Controller
 
   public function store($user_no)
   {
+    if (!$this->session->userdata('logged_in')) {
+      redirect('login');
+    }
     $this->form_validation->set_rules(
       'login_name',
       'Username',
@@ -96,12 +110,39 @@ class UsersLogin extends CI_Controller
     }
   }
 
-  public function edit()
-  { }
+  public function update($user_no)
+  {
+    if (!$this->session->userdata('logged_in')) {
+      redirect('login');
+    }
+    $this->form_validation->set_rules('old_pword', 'Old Password', 'required|callback_check_account_exists');
+    $this->form_validation->set_rules('login_pword', 'Password', 'required');
+    $this->form_validation->set_rules('password2', 'Confirm Password', 'matches[login_pword]');
 
-  public function update()
-  { }
+    if ($this->form_validation->run() === false) {
+      $this->create();
+    } else {
+      $old_pword = $this->input->post('old_pword');
+      $this->UserLogin_model->update_account($user_no);
+      $this->session->set_flashdata('success', 'User account successfully updated.');
+      redirect('users');
+    }
+  }
 
   public function soft_delete()
   { }
+
+  public function check_account_exists($old_pword)
+  {
+    // Get the user number based on url
+    $user_no = $this->uri->segment(3);
+    $result = $this->UserLogin_model->check_account_exists($old_pword, $user_no);
+    if ($result == 1) {
+      return true;
+    } else {
+      $this->session->set_flashdata('error', 'Failed to change password');
+      $this->form_validation->set_message('check_account_exists', 'Failed to change password');
+      return false;
+    }
+  }
 }
