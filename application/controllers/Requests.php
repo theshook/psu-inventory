@@ -5,6 +5,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Requests extends CI_Controller
 {
 
+  public function __construct()
+  {
+    parent::__construct();
+    if (!$this->session->userdata('logged_in')) {
+      redirect('login');
+    }
+  }
   public function index()
   {
     $data['title'] = 'Request';
@@ -13,8 +20,15 @@ class Requests extends CI_Controller
     $this->load->view('templates/footer');
   }
 
-  public function show()
-  { }
+  public function show($request_no)
+  {
+    $data['title'] = 'Request';
+    $data['request_items'] = $this->Request_Item_model->get_request_item($request_no);
+    $data['request'] = $this->Request_model->get_request($request_no);
+    $this->load->view('templates/header', $data);
+    $this->load->view('requests/show', $data);
+    $this->load->view('templates/footer');
+  }
 
   public function create()
   {
@@ -27,24 +41,65 @@ class Requests extends CI_Controller
 
   public function store()
   {
-    $result = $this->Request_Item_model->create_request_items();
-    if ($result === FALSE) {
-      $this->session->set_flashdata('success', 'Whooops request failed.');
+    $this->form_validation->set_rules('request_purpose', 'Purpose', 'required');
+    $this->form_validation->set_rules('request_code', 'Request Code', 'required');
+    $this->form_validation->set_rules('ri_quantity[]', 'Quantity', 'required|greater_than[0]|integer');
+    if ($this->form_validation->run() === FALSE) {
       $this->create();
     } else {
-      $this->session->set_flashdata('success', 'User successfully created.');
-      redirect('requests');
+    $result = $this->Request_Item_model->create_request_items();
+      if ($result === FALSE) {
+        $this->session->set_flashdata('error', 'Whooops request failed.');
+        $this->create();
+      } else {
+          $this->session->set_flashdata('success', 'Request successfully created.');
+          redirect('requests');
+      }
     }
   }
 
-  public function edit()
-  { }
+  public function edit($request_no)
+  { 
+    $data['title'] = 'Request';
+    $data['request_items'] = $this->Request_Item_model->get_request_item($request_no);
+    $data['request'] = $this->Request_model->get_request($request_no);
+    $data['products'] = $this->Product_model->get_products()->result();
+    $this->load->view('templates/header', $data);
+    $this->load->view('requests/edit', $data);
+    $this->load->view('templates/footer');
+  }
 
-  public function update()
-  { }
+  public function update($request_no)
+  {
+    $this->form_validation->set_rules('request_purpose', 'Purpose', 'required');
+    $this->form_validation->set_rules('ri_quantity[]', 'Quantity', 'required|greater_than[0]|integer');
+    if ($this->form_validation->run() === FALSE) {
+      $this->create();
+    } else {
 
-  public function soft_delete()
-  { }
+      $result = $this->Request_Item_model->update_request_items($request_no);
+      if ($result === FALSE) {
+        $this->session->set_flashdata('error', 'Whooops request failed.');
+        $this->create();
+      } else {
+          $this->session->set_flashdata('success', 'Request successfully created.');
+          redirect('requests');
+      }
+
+    }
+  }
+
+  public function soft_delete($request_no)
+  {
+    $result_req = $this->Request_model->soft_delete($request_no);
+    $result_ri = $this->Request_Item_model->soft_delete($request_no);
+    if ($result_req != FALSE && $result_ri != FALSE) {
+      $this->session->set_flashdata('success', 'Request successfully deleted.');
+    } else {
+      $this->session->set_flashdata('error', 'Whooops request failed.');
+    }
+      redirect('requests');
+  }
 
   // Ajax with datatables
   public function requests_page()

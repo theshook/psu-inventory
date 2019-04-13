@@ -46,7 +46,7 @@ class Products extends CI_Controller
         'is_unique'     => 'This %s already exists.'
       )
     );
-    $this->form_validation->set_rules('pro_title', 'Product Title', 'required');
+    $this->form_validation->set_rules('pro_title', 'Product Title', 'required|is_unique[products.pro_title]');
     $this->form_validation->set_rules('pro_price', 'Product Price', 'required');
 
     if ($this->form_validation->run() === false) {

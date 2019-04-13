@@ -2,15 +2,13 @@
   <div class="row justify-content-center">
     <div class="col-sm-10">
       <div class="card">
-        <div class="card-header">
-          <div class="text-center">
-            <h2 class="h3 display display">Requisition and Issue Slip</h2>
-          </div>
+        <div class="card-header d-flex align-items-center">
+          <h2 class="h5 display display">Edit Request</h2>
         </div>
         <div class="card-body">
-          <p>Lorem ipsum dolor sit amet consectetur.</p>
-          <?= form_open('requests/store'); ?>
-          <div class="form-group row m-0">
+          <p>Department: <strong><?= $request[0]->depart_title ?></strong></p>
+          <?= form_open('requests/update/'.$request[0]->request_no); ?>
+          <div class="form-group row">
             <label for="user_name" class="col-sm-2 col-form-label">Requested By:</label>
             <div class=" col-sm-8">
               <input type="text" name="user_name" placeholder="User id" class="form-control" value="<?= $this->session->userdata('user_lname') . ', ' . $this->session->userdata('user_fname') . ' ' . $this->session->userdata('user_mname')[0] . '.' ?>" disabled>
@@ -22,17 +20,17 @@
               <input type="date" name="due_date" class="form-control">
             </div>
           </div>
-          <div class="form-group row m-0">
+          <div class="form-group row">
             <label for="request_purpose" class="col-sm-2 col-form-label">Purpose:</label>
             <div class=" col-sm-8">
-              <input type="text" name="request_purpose" class="form-control <?= (form_error('request_purpose') != false) ? 'is-invalid' : '' ?>" />
+              <input type="text" name="request_purpose" class="form-control <?= (form_error('request_purpose') != false) ? 'is-invalid' : '' ?>" value="<?= $request[0]->request_purpose ?>" />
               <div class="invalid-feedback"><?= form_error('request_purpose'); ?></div>
             </div>
           </div>
-          <div class="form-group row m-0">
-            <label for="request_code" class="col-sm-2 col-form-label">Code:</label>
+          <div class="form-group row">
+            <label for="request_purpose" class="col-sm-2 col-form-label">Code:</label>
             <div class=" col-sm-8">
-              <input type="text" name="request_code" class="form-control <?= (form_error('request_code') != false) ? 'is-invalid' : '' ?>" />
+              <input type="text" name="request_code" class="form-control <?= (form_error('request_code') != false) ? 'is-invalid' : '' ?>" value="<?= $request[0]->request_code ?>" />
               <div class="invalid-feedback"><?= form_error('request_code'); ?></div>
             </div>
           </div>
@@ -47,28 +45,32 @@
               </tr>
             </thead>
             <tbody>
-                  <tr>
-                  <th scope="row">
+              <?php foreach($request_items as $key => $ri): ?>
+                <tr>
+                  <th scope="row" width="80%">
                     <select name="prod_no[]" id="products[]" class="form-control">
                       <?php foreach ($products as $product) : ?>
-                        <option value="<?= $product->pro_no ?>">
+                        <option value="<?= $product->pro_no ?>" <?= ($product->pro_no == $ri->pro_no) ? 'selected' : '' ?>>
                           <?= $product->pro_title ?> - (<?= $product->unit_name ?>)
                         </option>
                       <?php endforeach; ?>
                     </select>
                   </th>
-                  <td><input type="number" id="ri_quantity[]" name="ri_quantity[]" value="1" min="1" class="form-control <?= (form_error('ri_quantity[]') != false) ? 'is-invalid' : '' ?>" /></td>
+                  <td width="20%">
+                    <input type="number" name="ri_quantity[]" value="<?= $ri->ri_quantity ?>" min="1" class="form-control <?= (form_error('ri_quantity[]') != false) ? 'is-invalid' : '' ?>" />
+                  </td>
                   <td>
                     <a href="javascript:void(0);"  id="remove_field" class="remove" title="Remove field">
                       <i class="fa fa-minus-circle fa-2x" aria-hidden="true"></i>
                     </a>
                   </td>
                 </tr>
+              <?php endforeach; ?>
             </tbody>
           </table>
           <div class="form-group">
             <div class="col-sm-2">
-              <input type="submit" value="Create" class="btn btn-primary btn-block">
+              <input type="submit" value="Update" class="btn btn-primary btn-block">
             </div>
           </div>
           <?= form_close(); ?>

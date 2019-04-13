@@ -32,7 +32,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label>cat_no</label>
+            <label>Category</label>
             <select name="cat_no" class="form-control">
               <?php foreach ($categories as $category) : ?>
                 <option value="<?= $category->cat_no ?>"><?= $category->cat_name ?></option>

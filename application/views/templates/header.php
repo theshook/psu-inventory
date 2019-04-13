@@ -88,6 +88,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <li><a href="<?= base_url() ?>requests/">Requests</a></li>
               </ul>
             </li>
+            <li class="<?= ($title == 'Inventory') ? 'active' : '' ?>"><a href="#sideBarInvDropDown" aria-expanded="<?= ($title == 'Inventory') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-cubes" aria-hidden="true"></i>Inventory Menu</a>
+              <ul id="sideBarInvDropDown" class="collapse list-unstyled <?= ($title == 'Inventory') ? 'show' : '' ?>">
+                <li><a href="<?= base_url() ?>inventories/">Stocks</a></li>
+                <li><a href="<?= base_url() ?>release/">Release</a></li>
+              </ul>
+            </li>
+            <li class="<?= ($title == 'Supply') ? 'active' : '' ?>"><a href="#sideBarSuppDropDown" aria-expanded="<?= ($title == 'Supply') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-truck" aria-hidden="true"></i>Supply Menu</a>
+              <ul id="sideBarSuppDropDown" class="collapse list-unstyled <?= ($title == 'Supply') ? 'show' : '' ?>">
+                <li><a href="<?= base_url() ?>supplies/">Supplies</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
         <div class="admin-menu">
