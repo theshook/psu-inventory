@@ -7,6 +7,7 @@ class Request_model extends CI_Model
   {
     $this->load->database();
   }
+
   public function get_requests()
   {
     $this->db->join('users', 'users.user_no = requests.user_no');
@@ -17,6 +18,20 @@ class Request_model extends CI_Model
       ->get_where('requests', array(
         'request_inactive' => 0,
         'request_delete' => 0
+      ));
+  }
+
+  public function get_requests_by_department()
+  {
+    $this->db->join('users', 'users.user_no = requests.user_no');
+    $this->db->join('employments', 'employments.user_no = users.user_no');
+    $this->db->join('departments', 'departments.depart_no = employments.depart_no');
+    $this->db->group_by('requests.request_no');
+    return $this->db
+      ->get_where('requests', array(
+        'request_inactive' => 0,
+        'request_delete' => 0,
+        'employments.depart_no' => $this->session->userdata('depart_no')
       ));
   }
 
@@ -37,6 +52,22 @@ class Request_model extends CI_Model
   public function get_total_requests()
   {
     $query = $this->db->select('COUNT(*) as num')->get('requests');
+    $result = $query->row();
+
+    if (isset($result)) return $result->num;
+    return 0;
+  }
+
+  public function get_total_requests_by_department()
+  {
+    $this->db->join('users', 'users.user_no = requests.user_no');
+    $this->db->join('employments', 'employments.user_no = users.user_no');
+    $this->db->join('departments', 'departments.depart_no = employments.depart_no');
+    $query = $this->db->select('COUNT(*) as num')->get_where('requests', array(
+        'request_inactive' => 0,
+        'request_delete' => 0,
+        'employments.depart_no' => $this->session->userdata('depart_no')
+        ));
     $result = $query->row();
 
     if (isset($result)) return $result->num;

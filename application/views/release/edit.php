@@ -3,7 +3,7 @@
     <div class="col-sm-10">
       <div class="card">
         <div class="card-header d-flex align-items-center">
-          <h2 class="h5 display display">Release Stock</h2>
+          <h2 class="h5 display display">View Stock</h2>
         </div>
         <div class="card-body">
           <p>Lorem ipsum dolor sit amet consectetur.</p>
@@ -33,8 +33,10 @@
             <textarea name="release_remark" class="form-control <?= (form_error('release_remark') != false) ? 'is-invalid' : '' ?>"><?= $release[0]->release_remark ?></textarea>
             <div class="invalid-feedback"><?= form_error('release_remark'); ?></div>
           </div>
-          <div class="form-group">
-            <input type="submit" value="Update Release Stock" class="btn btn-primary" id="submit" disabled>
+          <div class="form-group row">
+            <div class="col-sm-2">
+              <input type="submit" value="Update" class="btn btn-primary btn-block" id="submit" disabled>
+            </div>
           </div>
           <?= form_close(); ?>
         </div>

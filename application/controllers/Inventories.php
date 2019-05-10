@@ -99,8 +99,10 @@ class Inventories extends CI_Controller
   public function stocks($pro_no)
   {
     $inventories = $this->Inventory_model->get_total_stock_inventory($pro_no)->result();
-    $release = $this->Release_model->get_total_release_inventory($pro_no)->result();
-    $inventories[0]->invent_quantity -= $release[0]->release_quantity;
+    $release = $this->Release_model->get_total_release_inventory_ajax($pro_no)->result();
+    if ($release) {
+      $inventories[0]->invent_quantity -= $release[0]->release_quantity;
+    } 
     echo json_encode($inventories);
     exit();
   }
@@ -115,7 +117,7 @@ class Inventories extends CI_Controller
 
     $inventories = $this->Inventory_model->get_inventories();
     $total_inventories = $this->Inventory_model->get_total_inventories();
-    $releases = $this->Release_model->get_releases();
+    $releases = $this->Release_model->get_releases_no_waiting();
 
     $data = array();
     foreach ($inventories->result() as $r) {
@@ -126,7 +128,6 @@ class Inventories extends CI_Controller
         $r->pro_title,
         $r->unit_name,
         $r->invent_quantity,
-        date('M d, Y', strtotime($r->invent_date)),
       );
     }
 

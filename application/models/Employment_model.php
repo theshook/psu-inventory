@@ -7,6 +7,13 @@ class Employment_model extends CI_Model
     $this->load->database();
   }
 
+  public function get_user_details() {
+    $this->db->order_by('user_lname');
+    $this->db->join('users', 'users.user_no = employments.user_no');
+    $this->db->join('departments', 'departments.depart_no = employments.depart_no');
+    return $this->db->get('employments');
+  }
+
   public function create_user_employ($user_no)
   {
     $data = array(

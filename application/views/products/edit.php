@@ -32,7 +32,14 @@
             </select>
           </div>
           <div class="form-group">
-            <label>cat_no</label>
+            <label>Type</label>
+            <select name="pro_isEquipment" class="form-control">
+              <option value="0" <?= ($product[0]->pro_isEquipment == 0) ? 'selected' : '' ?>>Consumable</option>
+              <option value="1" <?= ($product[0]->pro_isEquipment == 1) ? 'selected' : '' ?>>Equipment</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
             <select name="cat_no" class="form-control">
               <?php foreach ($categories as $category) : ?>
                 <option value="<?= $category->cat_no ?>" <?= ($product[0]->cat_no == $category->cat_no) ? 'selected' : '' ?>><?= $category->cat_name ?></option>

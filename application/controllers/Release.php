@@ -13,6 +13,22 @@ class Release extends CI_Controller
     $this->load->view('templates/footer');
   }
 
+  public function equipments() {
+    $data['title'] = 'Inventory';
+
+    $this->load->view('templates/header', $data);
+    $this->load->view('release/equipment/equipments');
+    $this->load->view('templates/footer');
+  }
+
+  public function consumables() {
+    $data['title'] = 'Inventory';
+
+    $this->load->view('templates/header', $data);
+    $this->load->view('release/consumable/consumables');
+    $this->load->view('templates/footer');
+  }
+
   public function show($pro_no)
   {
     $data['title'] = 'Inventory';
@@ -22,10 +38,31 @@ class Release extends CI_Controller
     $this->load->view('templates/footer');
   }
 
+  # Viewing for each product to be release
+  public function view($release_no)
+  {
+    $data['title'] = 'Inventory';
+    $data['products'] = $this->Product_model->get_products()->result();
+    $data['supplier'] = $this->Supply_model->get_supplies()->result();
+    $data['release'] = $this->Release_model->get_release($release_no);
+    $this->load->view('templates/header', $data);
+    $this->load->view('release/view', $data);
+    $this->load->view('templates/footer');
+  }
+
+  # Release product from waiting
+  public function release_product($release_no, $pro_no)
+  {
+    $this->Release_model->release_product($release_no);
+    $this->session->set_flashdata('success', 'Stock successfully released.');
+    redirect('release/view/' . $release_no);
+  }
+
   public function create()
   {
     $data['title'] = 'Inventory';
     $data['products'] = $this->Product_model->get_products()->result();
+    $data['user_details'] = $this->Employment_model->get_user_details()->result();
     $this->load->view('templates/header', $data);
     $this->load->view('release/create');
     $this->load->view('templates/footer');
@@ -42,7 +79,7 @@ class Release extends CI_Controller
     } else {
       $this->Release_model->create_release();
       $this->session->set_flashdata('success', 'Stock successfully created.');
-      redirect('inventories');
+      redirect('release');
     }
   }
 
@@ -94,11 +131,80 @@ class Release extends CI_Controller
     foreach ($release->result() as $r) {
 
       $data[] = array(
-        $r->pro_no,
+        $r->release_no,
         $r->pro_code,
         $r->pro_title,
         $r->unit_name,
         $r->release_quantity,
+        $r->release_status,
+        date('M d, Y', strtotime($r->release_date)),
+      );
+    }
+
+    $output = array(
+      "draw" => $draw,
+      "recordsTotal" => $total_release,
+      "recordsFiltered" => $total_release,
+      "data" => $data
+    );
+    echo json_encode($output);
+    exit();
+  }
+
+  public function release_equipments()
+  {
+    // Datatables Variables
+    $draw = intval($this->input->get("draw"));
+    $start = intval($this->input->get("start"));
+    $length = intval($this->input->get("length"));
+
+    $release = $this->Release_model->get_releases_equipments();
+    $total_release = $this->Release_model->get_total_release_equipments();
+
+    $data = array();
+    foreach ($release->result() as $r) {
+
+      $data[] = array(
+        $r->release_no,
+        $r->pro_code,
+        $r->pro_title,
+        $r->unit_name,
+        $r->release_quantity,
+        $r->release_status,
+        date('M d, Y', strtotime($r->release_date)),
+      );
+    }
+
+    $output = array(
+      "draw" => $draw,
+      "recordsTotal" => $total_release,
+      "recordsFiltered" => $total_release,
+      "data" => $data
+    );
+    echo json_encode($output);
+    exit();
+  }
+
+  public function release_consumables()
+  {
+    // Datatables Variables
+    $draw = intval($this->input->get("draw"));
+    $start = intval($this->input->get("start"));
+    $length = intval($this->input->get("length"));
+
+    $release = $this->Release_model->get_releases_consumables();
+    $total_release = $this->Release_model->get_total_release_consumables();
+
+    $data = array();
+    foreach ($release->result() as $r) {
+
+      $data[] = array(
+        $r->release_no,
+        $r->pro_code,
+        $r->pro_title,
+        $r->unit_name,
+        $r->release_quantity,
+        $r->release_status,
         date('M d, Y', strtotime($r->release_date)),
       );
     }

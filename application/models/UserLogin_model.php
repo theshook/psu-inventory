@@ -24,7 +24,8 @@ class UserLogin_model extends CI_Model
       'user_no' => $user_no,
       'login_name' => $this->input->post('login_name'),
       'login_pword' => md5($this->input->post('login_pword')),
-      'login_encode' => $this->session->userdata('user_no')
+      'login_encode' => $this->session->userdata('user_no'),
+      'role_id' => $this->input->post('role_id')
     );
 
     return $this->db->insert('user_login', $data);
@@ -34,7 +35,8 @@ class UserLogin_model extends CI_Model
   {
     $data = array(
       'login_pword' => md5($this->input->post('login_pword')),
-      'login_encode' => $this->session->userdata('user_no')
+      'login_encode' => $this->session->userdata('user_no'),
+      'role_id' => $this->input->post('role_id')
     );
 
     $this->db->where('user_no', $user_no);
@@ -55,6 +57,7 @@ class UserLogin_model extends CI_Model
     $this->db->join('users', 'users.user_no = user_login.user_no');
     $this->db->join('employments', 'employments.user_no = users.user_no');
     $this->db->join('departments', 'departments.depart_no = employments.depart_no');
+    $this->db->join('roles', 'roles.role_id = user_login.role_id');
     $this->db->where('login_name', $username);
     $this->db->where('login_pword', $password);
     $result = $this->db->get('user_login');

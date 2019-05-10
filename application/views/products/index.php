@@ -20,6 +20,7 @@
                   <th>Title</th>
                   <th>Price</th>
                   <th>Unit</th>
+                  <th>Type</th>
                   <th>Category</th>
                   <th>Action</th>
                 </tr>

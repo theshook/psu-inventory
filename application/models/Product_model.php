@@ -50,6 +50,7 @@ class Product_model extends CI_Model
       'pro_code' => $this->input->post('pro_code'),
       'pro_title' => $this->input->post('pro_title'),
       'pro_price' => $this->input->post('pro_price'),
+      'pro_isEquipment' => $this->input->post('pro_isEquipment'),
       'pro_encode' => $this->session->userdata('user_no')
     );
 
@@ -64,6 +65,7 @@ class Product_model extends CI_Model
       'pro_code' => $this->input->post('pro_code'),
       'pro_title' => $this->input->post('pro_title'),
       'pro_price' => $this->input->post('pro_price'),
+      'pro_isEquipment' => $this->input->post('pro_isEquipment'),
       'pro_encode' => $this->session->userdata('user_no')
     );
     $this->db->where('pro_no', $pro_no);

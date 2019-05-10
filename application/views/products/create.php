@@ -32,6 +32,13 @@
             </select>
           </div>
           <div class="form-group">
+            <label>Type</label>
+            <select name="pro_isEquipment" class="form-control">
+              <option value="0">Consumable</option>
+              <option value="1">Equipment</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label>Category</label>
             <select name="cat_no" class="form-control">
               <?php foreach ($categories as $category) : ?>

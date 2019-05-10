@@ -3,25 +3,21 @@
     <div class="col-sm-12">
       <div class="card">
         <div class="card-header">
-          <div class="float-right">
-            <a href="<?= base_url() ?>release/create" class="btn btn-info"><i class="fa fa-plus-circle" aria-hidden="true"></i> New Release</a>
-          </div>
           <div class="text-monospace">
-            <h2>Release List</h2>
+            <h2>Property Acknowledgement List</h2>
           </div>
         </div>
         <div class="card-body">
           <div class="table-responsive-sm">
             <table id="department-table" class="table table-bordered table-striped table-hover center">
               <thead>
-                <th>invent_no</th>
-                <th>Code</th>
-                <th>Product</th>
-                <th>Unit</th>
-                <th>Quantity</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Action</th>
+                <tr>
+                  <th>user_no</th>
+                  <th>Last Name</th>
+                  <th>First Name</th>
+                  <th>Middle Name</th>
+                  <th>Department</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -38,17 +34,15 @@
     var table = $('#department-table').DataTable({
       "pageLength": 5,
       "ajax": {
-        url: "<?php echo site_url("release/releases_page") ?>",
+        url: "<?php echo site_url("reports/property_acknowledgement_data") ?>",
         type: 'GET'
       },
       "columnDefs": [{
-        "width": "15%",
+        "width": "7%",
         "targets": -1,
         "data": null,
         "defaultContent": `
-        <button class='btn btn-secondary mb-1' name='show'>
-          <i class="fa fa-search fa-fw" aria-hidden="true"></i>
-        </button>`
+        <button class='btn btn-secondary' name='show'><i class='fa fa-search fa-fw' aria-hidden='true'></i></button>`
       }, {
         "targets": [0],
         "visible": false,
@@ -63,7 +57,7 @@
     $('#department-table tbody').on('click', 'button', function() {
       var data = table.row($(this).parents('tr')).data();
       if (this.name == 'show') {
-        window.location = '<?= base_url() ?>release/view/' + data[0];
+        window.location = '<?= base_url() ?>reports/property_acknowledgement_show/' + data[0];
       }
     });
   });

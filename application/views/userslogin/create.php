@@ -30,6 +30,20 @@
             <input type="password" name="password2" class="form-control  <?= (form_error('password2') != false) ? 'is-invalid' : '' ?>">
             <div class="invalid-feedback"><?= form_error('password2'); ?></div>
           </div>
+          <div class="form-group">
+            <label>Access</label>
+            <select name="role_id" class="form-control">
+              <?php if (!empty($user_login)) : ?>
+                <?php foreach ($roles as $role) : ?>
+                  <option value="<?= $role->role_id ?>" <?= ($role->role_id == $user_login[0]->role_id) ? 'selected' : '' ?>><?= $role->role_name ?></option>
+                <?php endforeach; ?>
+              <?php else : ?>
+                <?php foreach ($roles as $role) : ?>
+                  <option value="<?= $role->role_id ?>"><?= $role->role_name ?></option>
+                <?php endforeach; ?>
+              <?php endif; ?>
+            </select>
+          </div>
 
           <div class="form-group">
             <input type="submit" value="<?= (empty($user_login)) ? 'Create' : 'Update' ?>" class="btn btn-primary">

@@ -29,10 +29,14 @@ class UsersLogin extends CI_Controller
           'user_mname' => $user->user_mname,
           'depart_no' => $user->depart_no,
           'depart_code' => $user->depart_code,
+          'depart_title' => $user->depart_title,
           'login_name' => $username,
+          'role_id' => $user->role_id,
+          'role_code' => $user->role_code,
+          'role_name' => $user->role_name,
           'logged_in' => true
         );
-
+        
         $this->session->set_userdata($user_data);
         $this->session->set_flashdata('success', 'You are now logged in.');
         redirect('/');
@@ -69,6 +73,8 @@ class UsersLogin extends CI_Controller
     $user_no = $this->uri->segment(3);
 
     $data['user'] = $this->UserModel->get_user($user_no);
+    $data['roles'] = $this->Roles_model->get_roles()->result();
+
     if (empty($data['user'])) {
       show_404();
     } else {

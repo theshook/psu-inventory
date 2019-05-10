@@ -19,6 +19,16 @@
             </select>
           </div>
           <div class="form-group">
+            <label>Accountable to</label>
+            <select name="user_no" id="user_no" class="form-control">
+              <?php foreach ($user_details as $user) : ?>
+                <option value="<?= $user->user_no ?>">
+                  <?= $user->user_lname.', ' .$user->user_fname ?> - <?= $user->depart_title ?>
+                </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="form-group">
             <label>Quantity</label>
             <input type="number" name="release_quantity" id="quantity" min="1" class="form-control  <?= (form_error('release_quantity') != false) ? 'is-invalid' : '' ?>">
             <div class="invalid-feedback"><?= form_error('release_quantity'); ?></div>
@@ -44,11 +54,10 @@
 </div>
 <script>
   $(document).ready(function() {
-    var product = $('#pro_no');
-    var quantity = $('#quantity');
     var submit = $('#submit');
     var quantity = 0;
     var remaining = 0;
+    var pro_no = 0;
 
     $(window).keydown(function(event) {
       if (event.keyCode == 13) {
@@ -60,18 +69,24 @@
     $('#quantity').change(function() {
       $.ajax({
         type: 'POST',
-        url: '<?= base_url() ?>/inventories/stocks/' + product.val(),
+        url: '<?= base_url() ?>inventories/stocks/' + $('#pro_no').val(),
         dataType: 'json',
         success: function(data) {
           $.each(data, function(i, item) {
             quantity = item.invent_quantity
+            pro_no = item.pro_no
           });
-          remaining = quantity - $('#quantity').val();
-          if (remaining < 0) {
-            alert('This product has ' + quantity + ' stocks left.');
-            submit.attr("disabled", true);
+          if (pro_no == $('#pro_no').val()) {
+            remaining = quantity - $('#quantity').val();
+            if (remaining < 0) {
+              alert('This product has ' + quantity + ' stocks left.');
+              submit.attr("disabled", true);
+            } else {
+              submit.attr("disabled", false);
+            }
           } else {
-            submit.attr("disabled", false);
+            alert('This product has 0 stocks left.');
+            submit.attr("disabled", true);
           }
         },
         error: function() {
@@ -80,23 +95,28 @@
       });
     });
 
-    product.change(function() {
+    $('#pro_no').change(function() {
       $.ajax({
         type: 'POST',
-        url: '<?= base_url() ?>/inventories/stocks/' + product.val(),
+        url: '<?= base_url() ?>inventories/stocks/' + $('#pro_no').val(),
         dataType: 'json',
         success: function(data) {
           $.each(data, function(i, item) {
             quantity = item.invent_quantity
+            pro_no = item.pro_no
           });
-          remaining = quantity - $('#quantity').val();
-          if (remaining < 0) {
-            alert('This product has ' + quantity + ' stocks left.');
-            submit.attr("disabled", true);
+          if (pro_no == $('#pro_no').val()) {
+            remaining = quantity - $('#quantity').val();
+            if (remaining < 0) {
+              alert('This product has ' + quantity + ' stocks left.');
+              submit.attr("disabled", true);
+            } else {
+              submit.attr("disabled", false);
+            }
           } else {
-            submit.attr("disabled", false);
+            alert('This product has 0 stocks left.');
+            submit.attr("disabled", true);
           }
-
         },
         error: function() {
           alert('insufficient stocks');

@@ -47,19 +47,19 @@ class Requests extends CI_Controller
     if ($this->form_validation->run() === FALSE) {
       $this->create();
     } else {
-    $result = $this->Request_Item_model->create_request_items();
+      $result = $this->Request_Item_model->create_request_items();
       if ($result === FALSE) {
         $this->session->set_flashdata('error', 'Whooops request failed.');
         $this->create();
       } else {
-          $this->session->set_flashdata('success', 'Request successfully created.');
-          redirect('requests');
+        $this->session->set_flashdata('success', 'Request successfully created.');
+        redirect('requests');
       }
     }
   }
 
   public function edit($request_no)
-  { 
+  {
     $data['title'] = 'Request';
     $data['request_items'] = $this->Request_Item_model->get_request_item($request_no);
     $data['request'] = $this->Request_model->get_request($request_no);
@@ -82,10 +82,9 @@ class Requests extends CI_Controller
         $this->session->set_flashdata('error', 'Whooops request failed.');
         $this->create();
       } else {
-          $this->session->set_flashdata('success', 'Request successfully created.');
-          redirect('requests');
+        $this->session->set_flashdata('success', 'Request successfully created.');
+        redirect('requests');
       }
-
     }
   }
 
@@ -98,7 +97,29 @@ class Requests extends CI_Controller
     } else {
       $this->session->set_flashdata('error', 'Whooops request failed.');
     }
-      redirect('requests');
+    redirect('requests');
+  }
+
+  public function approve($request_no, $ri_no)
+  {
+    $result_ri = $this->Request_Item_model->approve_ri($ri_no);
+    if ($result_ri != FALSE) {
+      $this->session->set_flashdata('success', 'Request successfully approved.');
+    } else {
+      $this->session->set_flashdata('error', 'Whooops something went wrong.');
+    }
+    redirect('requests/show/' . $request_no);
+  }
+
+  public function deny($request_no, $ri_no)
+  {
+    $result_ri = $this->Request_Item_model->deny_ri($ri_no);
+    if ($result_ri != FALSE) {
+      $this->session->set_flashdata('success', 'Request denied.');
+    } else {
+      $this->session->set_flashdata('error', 'Whooops something went wrong.');
+    }
+    redirect('requests/show/' . $request_no);
   }
 
   // Ajax with datatables
@@ -109,8 +130,13 @@ class Requests extends CI_Controller
     $start = intval($this->input->get("start"));
     $length = intval($this->input->get("length"));
 
-    $requests = $this->Request_model->get_requests();
-    $total_requests = $this->Request_model->get_total_requests();
+    if ($this->session->userdata('role_id') != 4) :
+      $requests = $this->Request_model->get_requests();
+      $total_requests = $this->Request_model->get_total_requests();
+    else :
+      $requests = $this->Request_model->get_requests_by_department();
+      $total_requests = $this->Request_model->get_total_requests_by_department();
+    endif;
 
     $data = array();
 
@@ -118,6 +144,7 @@ class Requests extends CI_Controller
 
       $data[] = array(
         $r->request_no,
+        $r->user_no,
         $r->user_lname . ', ' . $r->user_fname . ' ' . $r->user_mname[0],
         $r->depart_title,
         $r->request_code,

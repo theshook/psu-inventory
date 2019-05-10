@@ -16,6 +16,7 @@
               <thead>
                 <tr>
                   <th>request_no</th>
+                  <th>user_no</th>
                   <th>Name</th>
                   <th>Department</th>
                   <th>Code</th>
@@ -37,25 +38,59 @@
   $(document).ready(function() {
     var table = $('#user-table').DataTable({
       "pageLength": 5,
+      processing: true,
+      serverSide: true,
       "ajax": {
         url: "<?php echo site_url("requests/requests_page") ?>",
         type: 'GET'
       },
+      columns: [{},
+        {},
+        {},
+        {},
+        {},
+        {},
+        /* EDIT */
+        {
+          mRender: function(data, type, row) {
+            <?php if ($this->session->userdata('role_id') == 4) : ?>
+              if (row[1] == <?= $this->session->userdata('user_no') ?>) {
+                return `
+                  <button class='btn btn-primary mb-1' name='edit'><i class='fa fa-pencil fa-fw'  aria-hidden='true'></i></button>
+                  <button class='btn btn-danger mb-1' name='delete'>
+                  <i class='fa fa-trash-o fa-fw' aria-hidden='true'></i>
+                  </button>
+                  <button class='btn btn-info mb-1' name='show'><i class="fa fa-search fa-fw" aria-hidden="true"></i></button>`;
+              } else {
+                return `
+                  <button class='btn btn-info mb-1' name='show'><i class="fa fa-search fa-fw" aria-hidden="true"></i></button>`;
+              }
+            <?php endif; ?>
+          }
+        }
+      ],
       "columnDefs": [{
-        "width": "17%",
-        "targets": -1,
-        "data": null,
-        "defaultContent": `
-        <button class='btn btn-primary mb-1' name='edit'><i class='fa fa-pencil fa-fw' aria-hidden='true'></i></button>
-        <button class='btn btn-danger mb-1' name='delete'>
-        <i class='fa fa-trash-o fa-fw' aria-hidden='true'></i>
-        </button>
-        <button class='btn btn-info mb-1' name='show'><i class="fa fa-search fa-fw" aria-hidden="true"></i></button>`
-      }, {
-        "targets": [0],
-        "visible": false,
-        "searchable": false
-      }],
+          "width": "17%",
+          "targets": -1,
+          "data": null,
+          "defaultContent": `
+          <button class='btn btn-primary mb-1' name='edit'><i class='fa fa-pencil fa-fw' aria-hidden='true'></i></button>
+          <button class='btn btn-danger mb-1' name='delete'>
+          <i class='fa fa-trash-o fa-fw' aria-hidden='true'></i>
+          </button>
+          <button class='btn btn-info mb-1' name='show'><i class="fa fa-search fa-fw" aria-hidden="true"></i></button>`
+        },
+        {
+          "targets": [0],
+          "visible": false,
+          "searchable": false
+        },
+        {
+          "targets": [1],
+          "visible": false,
+          "searchable": false
+        }
+      ],
       "aLengthMenu": [
         [5, 10, 15, 20, 25, -1],
         [5, 10, 15, 20, 25, "All"]

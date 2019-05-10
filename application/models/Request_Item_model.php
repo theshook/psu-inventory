@@ -17,7 +17,7 @@ class Request_Item_model extends CI_Model
       'request_items.request_no' => $request_no,
       'ri_inactive' => 0,
       'ri_delete' => 0
-      ));
+    ));
     return $query->result();
   }
 
@@ -64,8 +64,7 @@ class Request_Item_model extends CI_Model
     }
     $this->db->trans_complete();
 
-    if ($this->db->trans_status() === FALSE)
-    {
+    if ($this->db->trans_status() === FALSE) {
       return false;
     } else {
       return true;
@@ -77,6 +76,20 @@ class Request_Item_model extends CI_Model
     $this->db->where('request_no', $request_no);
     $this->db->set('ri_delete', 1);
     $this->db->set('ri_encode', $this->session->userdata('user_no'));
+    return $this->db->update('request_items');
+  }
+
+  public function approve_ri($ri_no)
+  {
+    $this->db->where('ri_no', $ri_no);
+    $this->db->set('ri_status', 'Approved');
+    return $this->db->update('request_items');
+  }
+
+  public function deny_ri($ri_no)
+  {
+    $this->db->where('ri_no', $ri_no);
+    $this->db->set('ri_status', 'Denied');
     return $this->db->update('request_items');
   }
 }

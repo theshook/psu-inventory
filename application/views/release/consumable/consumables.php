@@ -7,7 +7,7 @@
             <a href="<?= base_url() ?>release/create" class="btn btn-info"><i class="fa fa-plus-circle" aria-hidden="true"></i> New Release</a>
           </div>
           <div class="text-monospace">
-            <h2>Release List</h2>
+            <h2>Release Consumables</h2>
           </div>
         </div>
         <div class="card-body">
@@ -38,7 +38,7 @@
     var table = $('#department-table').DataTable({
       "pageLength": 5,
       "ajax": {
-        url: "<?php echo site_url("release/releases_page") ?>",
+        url: "<?php echo site_url("release/release_consumables") ?>",
         type: 'GET'
       },
       "columnDefs": [{

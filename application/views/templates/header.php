@@ -1,5 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+
+$sub_title = $this->uri->segment(1);
+$sub_equipments = $this->uri->segment(2);
+$user_type = $this->session->userdata('role_id');
 ?>
 <!DOCTYPE html>
 <html>
@@ -31,9 +35,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
   <link rel="shortcut icon" href="<?= base_url() . 'assets/' ?>img/favicon.ico">
 
   <script src="<?= base_url() . 'assets/' ?>vendor/jquery/jquery.min.js"></script>
+  <script src="<?= base_url() . 'assets/' ?>js/jquery.print.js"></script>
+  
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" />
   <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <!-- Tweaks for older IEs-->
   <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -63,48 +73,82 @@ defined('BASEPATH') or exit('No direct script access allowed');
         </div>
         <!-- Sidebar Navigation Menus-->
         <div class="main-menu">
+          <ul class="side-menu list-unstyled">
+            <li class="<?= ($title == 'Home') ? 'active' : '' ?>" <?= ($user_type == 4) ? 'hidden' : '' ?>><a href="<?= base_url() ?>"> <i class="icon-home"></i>Home </a></li>
+          </ul>
           <h5 class="sidenav-heading">Main Menu</h5>
           <ul id="side-main-menu" class="side-menu list-unstyled">
-            <li class="<?= ($title == 'Home') ? 'active' : '' ?>"><a href="<?= base_url() ?>"> <i class="icon-home"></i>Home </a></li>
-            <li class="<?= ($title == 'Users') ? 'active' : '' ?>"><a href="#sideBarUserDropDown" aria-expanded="<?= ($title == 'Users') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-user" aria-hidden="true"></i>User Menu</a>
-              <ul id="sideBarUserDropDown" class="collapse list-unstyled <?= ($title == 'Users') ? 'show' : '' ?>">
-                <li><a href="<?= base_url() ?>users/">Users</a></li>
-              </ul>
-            </li>
-            <li class="<?= ($title == 'Department') ? 'active' : '' ?>"><a href="#sideBarDepartDropDown" aria-expanded="<?= ($title == 'Department') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-building" aria-hidden="true"></i>Department Menu</a>
-              <ul id="sideBarDepartDropDown" class="collapse list-unstyled <?= ($title == 'Department') ? 'show' : '' ?>">
-                <li><a href="<?= base_url() ?>departments/">Departments</a></li>
-              </ul>
-            </li>
-            <li class="<?= ($title == 'Product') ? 'active' : '' ?>"><a href="#sideBarProdDropDown" aria-expanded="<?= ($title == 'Product') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-product-hunt" aria-hidden="true"></i>Product Menu</a>
+            <li class="<?= ($title == 'Product') ? 'active' : '' ?>" <?= ($user_type == 4) ? 'hidden' : '' ?>><a href="#sideBarProdDropDown" aria-expanded="<?= ($title == 'Product') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-product-hunt" aria-hidden="true"></i>Product Menu</a>
               <ul id="sideBarProdDropDown" class="collapse list-unstyled <?= ($title == 'Product') ? 'show' : '' ?>">
-                <li><a href="<?= base_url() ?>products/">Products</a></li>
-                <li><a href="<?= base_url() ?>prod_units/">Units</a></li>
-                <li><a href="<?= base_url() ?>prod_categories/">Categories</a></li>
+                <li class="<?= ($sub_title == 'products') ? 'active' : '' ?>"><a href="<?= base_url() ?>products/">Products</a></li>
+                <li class="<?= ($sub_title == 'prod_units') ? 'active' : '' ?>"><a href="<?= base_url() ?>prod_units/">Units</a></li>
+                <li class="<?= ($sub_title == 'prod_categories') ? 'active' : '' ?>"><a href="<?= base_url() ?>prod_categories/">Categories</a></li>
               </ul>
             </li>
             <li class="<?= ($title == 'Request') ? 'active' : '' ?>"><a href="#sideBarReqDropDown" aria-expanded="<?= ($title == 'Request') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-envelope" aria-hidden="true"></i>Request Menu</a>
               <ul id="sideBarReqDropDown" class="collapse list-unstyled <?= ($title == 'Request') ? 'show' : '' ?>">
-                <li><a href="<?= base_url() ?>requests/">Requests</a></li>
+                <li class="<?= ($sub_title == 'requests') ? 'active' : '' ?>"><a href="<?= base_url() ?>requests/">Requests</a></li>
               </ul>
             </li>
-            <li class="<?= ($title == 'Inventory') ? 'active' : '' ?>"><a href="#sideBarInvDropDown" aria-expanded="<?= ($title == 'Inventory') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-cubes" aria-hidden="true"></i>Inventory Menu</a>
+            <li class="<?= ($title == 'Inventory') ? 'active' : '' ?>" <?= ($user_type == 4) ? 'hidden' : '' ?>>
+              <a href="#sideBarInvDropDown" aria-expanded="<?= ($title == 'Inventory') ? 'true' : 'false' ?>" data-toggle="collapse">
+                <i class="fa fa-cubes" aria-hidden="true"></i>Inventory Menu
+              </a>
               <ul id="sideBarInvDropDown" class="collapse list-unstyled <?= ($title == 'Inventory') ? 'show' : '' ?>">
-                <li><a href="<?= base_url() ?>inventories/">Stocks</a></li>
-                <li><a href="<?= base_url() ?>release/">Release</a></li>
+                <li class="<?= ($sub_title == 'inventories') ? 'active' : '' ?>"><a href="<?= base_url() ?>inventories/">Stocks</a></li>
+                <!-- <li class="<?= ($sub_title == 'release') ? 'active' : '' ?>"><a href="<?= base_url() ?>release/">Release</a></li> -->
+                <li class="<?= ($sub_equipments == 'equipments') ? 'active' : '' ?>"><a href="<?= base_url() ?>release/equipments">Release Equipments</a></li>
+                <li class="<?= ($sub_equipments == 'consumables') ? 'active' : '' ?>"><a href="<?= base_url() ?>release/consumables">Release Consumables</a></li>
               </ul>
             </li>
-            <li class="<?= ($title == 'Supply') ? 'active' : '' ?>"><a href="#sideBarSuppDropDown" aria-expanded="<?= ($title == 'Supply') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-truck" aria-hidden="true"></i>Supply Menu</a>
+            <li class="<?= ($title == 'Supply') ? 'active' : '' ?>" <?= ($user_type == 4) ? 'hidden' : '' ?>><a href="#sideBarSuppDropDown" aria-expanded="<?= ($title == 'Supply') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-truck" aria-hidden="true"></i>Supply Menu</a>
               <ul id="sideBarSuppDropDown" class="collapse list-unstyled <?= ($title == 'Supply') ? 'show' : '' ?>">
-                <li><a href="<?= base_url() ?>supplies/">Supplies</a></li>
+                <li class="<?= ($sub_title == 'supplies') ? 'active' : '' ?>"><a href="<?= base_url() ?>supplies/">Supplies</a></li>
+              </ul>
+            </li>
+            <li class="<?= ($title == 'reports') ? 'active' : '' ?>" <?= ($user_type == 4) ? 'hidden' : '' ?>>
+              <a href="#sideBarRepDropDown" aria-expanded="<?= ($title == 'reports') ? 'true' : 'false' ?>" data-toggle="collapse">
+                <i class="fa fa-file" aria-hidden="true"></i>
+                  Reports Menu
+              </a>
+              <ul id="sideBarRepDropDown" class="collapse list-unstyled <?= ($title == 'reports') ? 'show' : '' ?>">
+                <li class="<?= ($sub_equipments == 'property_acknowledgement' || $sub_equipments == 'property_acknowledgement_show') ? 'active' : '' ?>">
+                  <a href="<?= base_url() ?>reports/property_acknowledgement/">
+                    Property Acknowledgement
+                  </a>
+                </li>
+                <li class="<?= ($sub_equipments == 'supply_availability_inquiry') ? 'active' : '' ?>">
+                  <a href="<?= base_url() ?>reports/supply_availability_inquiry/">
+                    Supply Availability Inquiry
+                  </a>
+                </li>
+                <li class="<?= ($sub_equipments == 'yearly_issued_summary') ? 'active' : '' ?>">
+                  <a href="<?= base_url() ?>reports/yearly_issued_summary/">
+                    Yearly Issued Summary
+                  </a>
+                </li>
+                <li class="<?= ($sub_equipments == 'monthly_issued_summary') ? 'active' : '' ?>">
+                  <a href="<?= base_url() ?>reports/monthly_issued_summary/">
+                    Monthly Issued Summary
+                  </a>
+                </li>
               </ul>
             </li>
           </ul>
         </div>
-        <div class="admin-menu">
-          <h5 class="sidenav-heading">Admin menu</h5>
+        <div class="admin-menu" <?= ($user_type != 1) ? 'hidden' : ''?>>
+          <h5 class="sidenav-heading">Admin</h5>
           <ul id="side-admin-menu" class="side-menu list-unstyled">
-            <li> <a href="#"> <i class="icon-screen"> </i>Demo</a></li>
+            <li class="<?= ($title == 'Users') ? 'active' : '' ?>"><a href="#sideBarUserDropDown" aria-expanded="<?= ($title == 'Users') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-user" aria-hidden="true"></i>User Menu</a>
+              <ul id="sideBarUserDropDown" class="collapse list-unstyled <?= ($title == 'Users') ? 'show' : '' ?>">
+                <li class="<?= ($sub_title == 'users') ? 'active' : '' ?>"><a href="<?= base_url() ?>users/">Users</a></li>
+              </ul>
+            </li>
+            <li class="<?= ($title == 'Department') ? 'active' : '' ?>"><a href="#sideBarDepartDropDown" aria-expanded="<?= ($title == 'Department') ? 'true' : 'false' ?>" data-toggle="collapse"><i class="fa fa-building" aria-hidden="true"></i>Department Menu</a>
+              <ul id="sideBarDepartDropDown" class="collapse list-unstyled <?= ($title == 'Department') ? 'show' : '' ?>">
+                <li class="<?= ($sub_title == 'departments') ? 'active' : '' ?>"><a href="<?= base_url() ?>departments/">Departments</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
       </div>

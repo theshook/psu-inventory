@@ -133,6 +133,7 @@ class Products extends CI_Controller
         $r->pro_title,
         $r->pro_price,
         $r->unit_name,
+        ($r->pro_isEquipment) ? 'Equipment' : 'Consumable',
         $r->cat_name,
       );
     }

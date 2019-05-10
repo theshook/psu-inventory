@@ -1,6 +1,6 @@
 <div class="container-fluid mt-2">
   <div class="row justify-content-center">
-    <div class="col-sm-10">
+    <div class="col-sm-12">
       <div class="card">
         <div class="card-header d-flex align-items-center">
           <h2 class="h5 display display">Show Stock Information for <strong><?= $stocks[0]->pro_title ?></strong></h2>
@@ -15,9 +15,7 @@
                 <th scope="col">Unit</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Supplier</th>
-                <th scope="col">Date</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
+                <th scope="col" colspan="3">Date</th>
               </tr>
             </thead>
             <tbody>
@@ -29,13 +27,15 @@
                   <td><?= $stock->invent_quantity ?></td>
                   <td><?= $stock->sup_name ?></td>
                   <td><?= date('M d Y', strtotime($stock->invent_date)) ?></td>
-                  <td><a href="<?= base_url() ?>inventories/edit/<?= $stock->invent_no ?>" class="btn btn-info btn-block">Edit</a></td>
-                  <td><a href="<?= base_url() ?>inventories/soft_delete/<?= $stock->invent_no ?>" onClick="return confirm('Do you want to delete?')" class="btn btn-danger btn-block">Delete</a></td>
+                  <?php if($this->session->userdata('role_id') == 1): ?>
+                    <td><a href="<?= base_url() ?>inventories/edit/<?= $stock->invent_no ?>" class="btn btn-info btn-block w-75">Edit</a></td>
+                    <td><a href="<?= base_url() ?>inventories/soft_delete/<?= $stock->invent_no ?>" onClick="return confirm('Do you want to delete?')" class="btn btn-danger btn-block w-75">Delete</a></td>
+                  <?php endif; ?>
                 </tr>
               <?php endforeach; ?>
             </tbody>
           </table>
-          <p><strong>Release</strong></p>
+          <!-- <p><strong>Release</strong></p>
           <table class="table table-striped table-hover">
             <thead>
               <tr>
@@ -57,7 +57,7 @@
                 </tr>
               <?php endforeach; ?>
             </tbody>
-          </table>
+          </table> -->
         </div>
       </div>
     </div>

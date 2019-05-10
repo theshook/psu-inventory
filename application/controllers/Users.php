@@ -38,6 +38,7 @@ class Users extends CI_Controller
   {
     $data['title'] = 'Users';
     $data['departs'] = $this->Department_model->get_departments()->result();
+
     $this->form_validation->set_rules(
       'user_id',
       'User ID',

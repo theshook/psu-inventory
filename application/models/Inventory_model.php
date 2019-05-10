@@ -28,7 +28,7 @@ class Inventory_model extends CI_Model
     $this->db->group_by('inventory.pro_no');
     $this->db->join('products', 'products.pro_no = inventory.pro_no');
     $this->db->join('units', 'units.unit_no = products.unit_no');
-    $this->db->select('SUM(invent_quantity) AS invent_quantity', FALSE);
+    $this->db->select('SUM(invent_quantity) AS invent_quantity, inventory.pro_no', FALSE);
     return $this->db
       ->get_where('inventory', array(
         'invent_inactive' => 0,
