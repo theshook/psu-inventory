@@ -143,12 +143,20 @@ class Report_model extends CI_Model
     $this->db->group_by('month');
     $this->db->join('products', 'release_inventory.pro_no = products.pro_no');
     $this->db->select('YEAR(release_date), MONTH(release_date) as month, release_quantity, pro_price, SUM(release_quantity * pro_price) as amount');
-    return $this->db->get_where('release_inventory', array(
-      'release_inactive' => 0,
-      'release_delete' => 0,
-      'YEAR(release_date)' => $this->input->get('year'),
-      'MONTH(release_date)' => $this->input->get('month')
-    ));
+    if ($this->input->get('month')) {
+      return $this->db->get_where('release_inventory', array(
+        'release_inactive' => 0,
+        'release_delete' => 0,
+        'YEAR(release_date)' => $this->input->get('year'),
+        'MONTH(release_date)' => $this->input->get('month')
+      ));
+    } else {
+      return $this->db->get_where('release_inventory', array(
+        'release_inactive' => 0,
+        'release_delete' => 0,
+        'YEAR(release_date)' => $this->input->get('year'),
+      ));
+    }
   }
 
   public function get_yearly_total_price() {
@@ -182,5 +190,27 @@ class Report_model extends CI_Model
       'MONTH(release_date)' => $this->input->get('month')
     ));
   }
+
+  public function get_monthly_price_w_unit () {
+    $this->db->group_by('release_inventory.pro_no');
+    $this->db->join('products', 'release_inventory.pro_no = products.pro_no');
+    $this->db->join('units', 'products.unit_no = units.unit_no');
+    $this->db->select('YEAR(release_date) as year, 
+      MONTH(release_date) as month, 
+      products.pro_no,
+      pro_title,
+      release_quantity, 
+      pro_price, 
+      unit_name,
+      SUM(release_quantity * pro_price) as amount');
+
+    return $this->db->get_where('release_inventory', array(
+      'release_inactive' => 0,
+      'release_delete' => 0,
+      'YEAR(release_date)' => $this->input->get('year'),
+      'MONTH(release_date)' => $this->input->get('month')
+    ));
+  }
+
 
 }

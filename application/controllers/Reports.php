@@ -90,5 +90,14 @@ class Reports extends CI_Controller
     $this->load->view('templates/footer');
   }
 
+  public function supplies_materials_issued () {
+    $data['title'] = 'reports';
+    $data['get_year'] = $this->Report_model->get_all_year()->result();
+    $data['monthly'] = $this->Report_model->get_monthly_price_w_unit()->result();
+    $data['total'] = $this->Report_model->get_monthly_total_price()->result()[0];
+    $this->load->view('templates/header', $data);
+    $this->load->view('report/Supplies & Materials Issued/supplies_materials_issued');
+    $this->load->view('templates/footer');
+  }
 
 }

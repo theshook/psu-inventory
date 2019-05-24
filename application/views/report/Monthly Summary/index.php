@@ -42,12 +42,12 @@
           </div>
         </div>
       <?= form_close(); ?> 
-      <?php if ($this->input->get('year') != 'null') : ?>
+      <?php if ($this->input->get('year') != 'null' && $this->input->get('month') != null) : ?>
         <button id="btn_print" class="btn btn-outline-success btn-block">PRINT RECORD</button>
       <?php endif; ?>
     </div>
   </div>
-  <?php if ($this->input->get('year') != 'null'): ?>
+  <?php if ($this->input->get('year') != 'null' && $this->input->get('month') != null): ?>
     <div class="row justify-content-center">
       <div class="col-sm-12">
         <div class="card" id="print">
@@ -77,13 +77,13 @@
                   <tr>
                     <td class="text-center"><?= $key+1 ?></td>
                     <td><?= $month->pro_title ?></td>
-                    <td class="text-center"><?= $month->amount ?></td>
+                    <td class="text-center"><?= ($month->amount) ? $month->amount : 'N/A' ?></td>
                   </tr>
                 <?php endforeach; ?>
                 <tr>
                   <td>&nbsp;</td>
                   <td class="text-right"><strong>TOTAL</strong></td>
-                  <td class="text-center"><?= $total->amount ?></td>
+                  <td class="text-center"><?= (!empty($total->amount)) ? $total->amount : 'N/A' ?></td>
                 </tr>
               </tbody>
             </table>

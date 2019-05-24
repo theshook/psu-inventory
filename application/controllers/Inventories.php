@@ -107,6 +107,29 @@ class Inventories extends CI_Controller
     exit();
   }
 
+  public function stocks_ajax()
+  {
+    $pro_no = $this->input->post('prod_no[]');
+    $ri_quantity = $this->input->post('ri_quantity[]');
+
+    for ($i = 0; $i < count($pro_no); $i++) {
+      $inventories = $this->Inventory_model->get_total_stock_inventory($pro_no[$i])->result();
+      $release = $this->Release_model->get_total_release_inventory_ajax($pro_no[$i])->result();
+      if ($release) {
+        $inventories[0]->invent_quantity -= $release[0]->release_quantity;
+        $remaining = $inventories[0]->invent_quantity - $ri_quantity[$i];
+        if ($remaining < 0) {
+          $inventories[0]->error = 'Not enough quantity';
+
+          echo json_encode($inventories);
+          exit();
+        }
+      }
+    }
+    // echo json_encode($inventories);
+    // exit();
+  }
+
   // Ajax with datatables
   public function inventories_page()
   {

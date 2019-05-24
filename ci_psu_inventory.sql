@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2019 at 07:54 AM
--- Server version: 10.1.35-MariaDB
--- PHP Version: 7.2.9
+-- Generation Time: May 10, 2019 at 05:59 AM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,6 +21,30 @@ SET time_zone = "+00:00";
 --
 -- Database: `ci_psu_inventory`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accountables`
+--
+
+CREATE TABLE `accountables` (
+  `acc_no` int(11) NOT NULL,
+  `release_no` int(11) NOT NULL,
+  `user_no` int(11) NOT NULL,
+  `acc_encode` int(11) NOT NULL DEFAULT '0',
+  `acc_encode_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `acc_inactive` int(11) NOT NULL DEFAULT '0',
+  `acc_delete` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `accountables`
+--
+
+INSERT INTO `accountables` (`acc_no`, `release_no`, `user_no`, `acc_encode`, `acc_encode_date`, `acc_inactive`, `acc_delete`) VALUES
+(4, 11, 3, 2, '2019-05-08 23:15:02', 0, 0),
+(5, 12, 3, 2, '2019-05-08 23:25:10', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -177,7 +201,8 @@ INSERT INTO `inventory` (`invent_no`, `pro_no`, `invent_quantity`, `invent_date`
 (3, 3, 100, '2019-04-01 00:00:00', 1, '123123123', 2, '2019-04-13 14:26:40', 0, 0),
 (4, 5, 5, '2019-04-09 00:00:00', 10, '00223118-45244', 2, '2019-04-13 14:27:51', 0, 0),
 (5, 6, 20, '2019-04-12 00:00:00', 1, '231231', 2, '2019-04-13 14:30:03', 0, 0),
-(6, 5, 1, '2019-04-13 00:00:00', 1, '111111', 2, '2019-04-13 15:08:07', 0, 0);
+(6, 5, 8, '2019-04-13 00:00:00', 1, '111111', 0, '2019-04-13 15:08:07', 0, 0),
+(7, 7, 100, '2019-04-23 00:00:00', 1, '23132', 2, '2019-04-23 16:38:03', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -192,6 +217,7 @@ CREATE TABLE `products` (
   `pro_code` varchar(20) NOT NULL,
   `pro_title` varchar(30) NOT NULL,
   `pro_price` decimal(10,2) NOT NULL,
+  `pro_isEquipment` int(11) NOT NULL DEFAULT '0',
   `pro_encode` int(11) NOT NULL DEFAULT '0',
   `pro_encode_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `pro_inactive` int(11) NOT NULL DEFAULT '0',
@@ -202,13 +228,14 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`pro_no`, `cat_no`, `unit_no`, `pro_code`, `pro_title`, `pro_price`, `pro_encode`, `pro_encode_date`, `pro_inactive`, `pro_delete`) VALUES
-(1, 3, 4, 'COKEs', 'COCA COLA', '40.00', 0, '2019-04-07 00:28:21', 0, 0),
-(2, 2, 3, 'NO', 'another product', '0.00', 0, '2019-04-07 00:34:37', 0, 1),
-(3, 2, 3, 'NOS', 'Nostril', '200.00', 0, '2019-04-07 00:36:01', 0, 0),
-(4, 2, 4, 'NEO', 'neozep', '500.00', 0, '2019-04-07 00:39:59', 0, 0),
-(5, 3, 5, 'QWEASD', 'One Copy', '500.00', 2, '2019-04-13 14:27:26', 0, 0),
-(6, 2, 3, 'SPSWE', 'Coca Cola', '7.00', 2, '2019-04-13 14:29:34', 0, 0);
+INSERT INTO `products` (`pro_no`, `cat_no`, `unit_no`, `pro_code`, `pro_title`, `pro_price`, `pro_isEquipment`, `pro_encode`, `pro_encode_date`, `pro_inactive`, `pro_delete`) VALUES
+(1, 3, 4, 'COKEs', 'COCA COLA', '40.00', 0, 0, '2019-04-07 00:28:21', 0, 0),
+(2, 2, 3, 'NO', 'another product', '0.00', 0, 0, '2019-04-07 00:34:37', 0, 0),
+(3, 2, 3, 'NOS', 'Nostril', '200.00', 0, 0, '2019-04-07 00:36:01', 0, 0),
+(4, 2, 4, 'NEO', 'neozep', '500.00', 0, 0, '2019-04-07 00:39:59', 0, 0),
+(5, 3, 5, 'QWEASD', 'One Copy', '500.00', 0, 2, '2019-04-13 14:27:26', 0, 0),
+(6, 2, 3, 'SPSWE', 'Coca Cola', '7.00', 0, 2, '2019-04-13 14:29:34', 0, 0),
+(7, 2, 0, 'EF', 'Electric Fan', '1200.00', 1, 2, '2019-04-22 20:53:22', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -234,10 +261,10 @@ CREATE TABLE `release_inventory` (
 --
 
 INSERT INTO `release_inventory` (`release_no`, `pro_no`, `release_quantity`, `release_date`, `release_remark`, `release_status`, `release_encode`, `release_encode_date`, `release_inactive`, `release_delete`) VALUES
-(1, 1, 99, '2019-04-13 00:00:00', 'Release for today', 'Release', 2, '2019-04-13 17:29:11', 0, 0),
-(2, 1, 10, '2019-04-13 00:00:00', 'To be release on', 'Waiting', 2, '2019-04-13 19:01:07', 0, 0),
-(3, 5, 1, '2019-04-13 00:00:00', 'wew', 'Waiting', 2, '2019-04-13 19:12:41', 0, 0),
-(4, 1, 1, '2019-04-19 00:00:00', 'Release', 'Release', 4, '2019-04-19 16:55:24', 0, 0);
+(11, 1, 3, '2019-05-01 00:00:00', 'qweasd', 'Release', 2, '2019-05-08 23:15:02', 0, 0),
+(12, 5, 10, '2019-04-08 00:00:00', 'yes', 'Release', 2, '2019-05-08 23:25:10', 0, 0),
+(13, 1, 3, '2018-05-01 00:00:00', 'qweasd', 'Release', 2, '2019-05-08 23:15:02', 0, 0),
+(14, 4, 3, '2019-05-10 00:00:00', 'qweasd', 'Release', 2, '2019-05-08 23:15:02', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -262,9 +289,7 @@ CREATE TABLE `requests` (
 --
 
 INSERT INTO `requests` (`request_no`, `user_no`, `depart_no`, `request_code`, `request_purpose`, `request_encode`, `request_encode_date`, `request_inactive`, `request_delete`) VALUES
-(14, 2, 5, 'OIU', 'Something ', 2, '2019-04-11 17:46:27', 0, 0),
-(15, 3, 23, 'QWE', 'it was on purpose', 3, '2019-04-19 14:53:22', 0, 0),
-(16, 6, 23, 'ASD', 'my purpose', 6, '2019-04-19 14:55:08', 0, 0);
+(17, 3, 23, 'qweasd', 'for something', 3, '2019-05-08 23:01:36', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -290,15 +315,7 @@ CREATE TABLE `request_items` (
 --
 
 INSERT INTO `request_items` (`ri_no`, `request_no`, `pro_no`, `ri_quantity`, `ri_remark`, `ri_status`, `ri_encode`, `ri_encode_date`, `ri_inactive`, `ri_delete`) VALUES
-(28, 14, 1, 2, NULL, 'Pending', 2, '2019-04-11 17:46:28', 0, 1),
-(29, 14, 4, 2, NULL, 'Pending', 2, '2019-04-11 17:46:28', 0, 1),
-(30, 14, 1, 2, NULL, 'Pending', 2, '2019-04-11 18:00:52', 0, 1),
-(31, 14, 4, 1, NULL, 'Pending', 2, '2019-04-11 18:00:52', 0, 1),
-(32, 14, 1, 1, NULL, 'Approved', 2, '2019-04-11 18:42:21', 0, 0),
-(33, 14, 4, 1, NULL, 'Denied', 2, '2019-04-11 18:42:21', 0, 0),
-(34, 15, 5, 3, NULL, 'Pending', 3, '2019-04-19 14:53:22', 0, 0),
-(38, 16, 1, 1, NULL, 'Denied', 6, '2019-04-19 14:56:09', 0, 0),
-(39, 16, 4, 1, NULL, 'Pending', 6, '2019-04-19 14:56:09', 0, 0);
+(40, 17, 5, 3, NULL, 'Approved', 3, '2019-05-08 23:01:36', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -369,6 +386,7 @@ CREATE TABLE `units` (
 --
 
 INSERT INTO `units` (`unit_no`, `unit_name`, `unit_encode`, `unit_encode_date`, `unit_inactive`, `unit_delete`) VALUES
+(0, 'Unit', 2, '2019-04-22 20:53:03', 0, 0),
 (1, 'pieces', 0, '2019-04-06 23:06:27', 0, 1),
 (2, 'Gallon', 0, '2019-04-06 23:17:16', 0, 1),
 (3, 'Bottle', 0, '2019-04-06 23:27:11', 0, 0),
@@ -455,11 +473,18 @@ INSERT INTO `user_login` (`login_no`, `user_no`, `role_id`, `login_name`, `login
 (2, 2, 1, 'admin', '5f4dcc3b5aa765d61d8327deb882cf99', 2, '2019-04-07 01:42:37', 0, 0),
 (3, 4, 2, 'officer', '5f4dcc3b5aa765d61d8327deb882cf99', 2, '2019-04-15 23:00:52', 0, 0),
 (4, 5, 3, 'staff', '5f4dcc3b5aa765d61d8327deb882cf99', 2, '2019-04-15 23:01:12', 0, 0),
-(5, 6, 4, 'pogi', '36f17c3939ac3e7b2fc9396fa8e953ea', 2, '2019-04-19 14:54:53', 0, 0);
+(5, 6, 4, 'pogi', '36f17c3939ac3e7b2fc9396fa8e953ea', 2, '2019-04-19 14:54:53', 0, 0),
+(6, 9, 3, 'weak', '5f4dcc3b5aa765d61d8327deb882cf99', 2, '2019-05-08 22:31:20', 0, 0);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `accountables`
+--
+ALTER TABLE `accountables`
+  ADD PRIMARY KEY (`acc_no`);
 
 --
 -- Indexes for table `categories`
@@ -545,6 +570,12 @@ ALTER TABLE `user_login`
 --
 
 --
+-- AUTO_INCREMENT for table `accountables`
+--
+ALTER TABLE `accountables`
+  MODIFY `acc_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
@@ -566,31 +597,31 @@ ALTER TABLE `employments`
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `invent_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `invent_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `pro_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `pro_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `release_inventory`
 --
 ALTER TABLE `release_inventory`
-  MODIFY `release_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `release_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `requests`
 --
 ALTER TABLE `requests`
-  MODIFY `request_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `request_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `request_items`
 --
 ALTER TABLE `request_items`
-  MODIFY `ri_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `ri_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `supplies`
@@ -608,7 +639,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_login`
 --
 ALTER TABLE `user_login`
-  MODIFY `login_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `login_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

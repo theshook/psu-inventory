@@ -102,6 +102,11 @@ class Release_model extends CI_Model
     return 0;
   }
 
+  public function get_released ($request_no)
+  {
+    
+  }
+
 /*************************************************************** Equipments ***********************************************/
   public function get_releases_equipments()
   {

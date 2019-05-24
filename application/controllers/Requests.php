@@ -25,6 +25,8 @@ class Requests extends CI_Controller
     $data['title'] = 'Request';
     $data['request_items'] = $this->Request_Item_model->get_request_item($request_no);
     $data['request'] = $this->Request_model->get_request($request_no);
+    $data['approved'] = $this->Request_Item_model->get_approved($request_no);
+    //$data['release'] = $this->Release_model->get_released($request_no);
     $this->load->view('templates/header', $data);
     $this->load->view('requests/show', $data);
     $this->load->view('templates/footer');

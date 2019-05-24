@@ -21,15 +21,30 @@ class Request_Item_model extends CI_Model
     return $query->result();
   }
 
+  public function get_approved($request_no) 
+  {
+    $this->db->join('requests', 'requests.request_no = request_items.request_no');
+    $this->db->join('users', 'users.user_no = request_items.ri_approved');
+    $this->db->join('products', 'products.pro_no = request_items.pro_no');
+    $this->db->join('units', 'units.unit_no = products.unit_no');
+    $query = $this->db->get_where('request_items', array(
+      'request_items.request_no' => $request_no,
+      'ri_inactive' => 0,
+      'ri_delete' => 0
+    ));
+    return $query->result();
+  }
+
   public function create_request_items()
   {
+    
     $pro_no = $this->input->post('prod_no[]');
     $ri_quantity = $this->input->post('ri_quantity[]');
 
     $this->db->trans_start();
 
     $request_no = $this->Request_model->create_request();
-
+      
     for ($i = 0; $i < count($pro_no); $i++) {
       $data = array(
         'pro_no' => $pro_no[$i],
@@ -37,6 +52,7 @@ class Request_Item_model extends CI_Model
         'request_no' => $request_no,
         'ri_encode' => $this->session->userdata('user_no')
       );
+
       $this->db->insert('request_items', $data);
     }
 
@@ -83,6 +99,7 @@ class Request_Item_model extends CI_Model
   {
     $this->db->where('ri_no', $ri_no);
     $this->db->set('ri_status', 'Approved');
+    $this->db->set('ri_approved', $this->session->userdata('user_no'));
     return $this->db->update('request_items');
   }
 

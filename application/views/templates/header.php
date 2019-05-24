@@ -44,6 +44,9 @@ $user_type = $this->session->userdata('role_id');
   <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  
   <!-- Tweaks for older IEs-->
   <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -130,6 +133,11 @@ $user_type = $this->session->userdata('role_id');
                 <li class="<?= ($sub_equipments == 'monthly_issued_summary') ? 'active' : '' ?>">
                   <a href="<?= base_url() ?>reports/monthly_issued_summary/">
                     Monthly Issued Summary
+                  </a>
+                </li>
+                <li class="<?= ($sub_equipments == 'supplies_materials_issued') ? 'active' : '' ?>">
+                  <a href="<?= base_url() ?>reports/supplies_materials_issued/">
+                    Supplies & Materials Issued
                   </a>
                 </li>
               </ul>
