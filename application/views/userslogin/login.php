@@ -2,12 +2,10 @@
   <div class="row justify-content-center">
     <div class="col-sm-4">
       <div class="card">
-        <div class="card-header">
-          <div class="text-center">
-            <h2 class="h5 display display">LOGIN</h2>
-          </div>
-        </div>
         <div class="card-body">
+          <div align="center">
+            <img src="<?= base_url() . 'assets/' ?>img/psu_logo.png" class="img-fluid" height="50%" width="50%">
+          </div>
           <?= form_open('userslogin/login'); ?>
           <div class="form-group">
             <label>Username</label>

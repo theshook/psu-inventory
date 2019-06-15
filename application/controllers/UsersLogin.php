@@ -39,7 +39,11 @@ class UsersLogin extends CI_Controller
         
         $this->session->set_userdata($user_data);
         $this->session->set_flashdata('success', 'You are now logged in.');
-        redirect('/');
+        if ($user->role_id == 4) {
+          redirect('/requests');
+        } else {
+          redirect('/');
+        }
       } else {
         $this->session->set_flashdata('error', 'Username or Password is incorrect.');
         redirect('userslogin/login');

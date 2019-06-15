@@ -63,7 +63,9 @@ class Reports extends CI_Controller
   public function supply_availability_inquiry () {
     $data['title'] = 'reports';
     $data['categories'] = $this->Report_model->get_categories()->result();
-    $data['products'] = $this->Report_model->get_products()->result();
+    //$data['products'] = $this->Report_model->get_products()->result();
+    $data['products'] = $this->Product_model->get_products()->result();
+    $data['units'] = $this->Product_model->get_units()->result();
     $data['release'] = $this->Report_model->get_products_release()->result();
     $this->load->view('templates/header', $data);
     $this->load->view('report/Supply Availability Inquiry/index');

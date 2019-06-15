@@ -33,6 +33,15 @@ class Product_model extends CI_Model
     return $query->result();
   }
 
+  public function get_units() 
+  {
+    $this->db->order_by('unit_name');
+    return $this->db->get_where('units', array(
+        'unit_inactive' => 0,
+        'unit_delete' => 0
+      ));
+  }
+
   public function get_total_products()
   {
     $query = $this->db->select('COUNT(*) as num')->get('products');

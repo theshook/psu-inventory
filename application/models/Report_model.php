@@ -12,7 +12,7 @@ class Report_model extends CI_Model
   	$this->db->group_by('employments.user_no');
   	$this->db->order_by('user_lname');
   	$this->db->join('release_inventory', 'release_inventory.release_no = accountables.release_no');
-  	// $this->db->join('products', 'products.pro_no = release_inventory.pro_no');
+  	$this->db->join('products', 'products.pro_no = release_inventory.pro_no');
   	// $this->db->join('units', 'units.unit_no = products.unit_no');
   	$this->db->join('employments', 'employments.user_no = accountables.user_no');
   	$this->db->join('users', 'users.user_no = employments.user_no');
@@ -21,7 +21,8 @@ class Report_model extends CI_Model
       ->get_where('accountables', array(
         'acc_inactive' => 0,
         'acc_delete' => 0,
-        'release_status' => 'Release'
+        'release_status' => 'Release',
+        'pro_isEquipment' => 1,
       ));
   }
 
